@@ -321,6 +321,17 @@ h2, h4 { letter-spacing: -.005em; }
 .etapes li b { font-family: var(--display); font-size: 18px; }
 @media (max-width: 760px) { .etapes li { grid-template-columns: 30px minmax(0, 1fr); } .etapes li span { grid-column: 2; } }
 
+
+/* ---------- Technologies ---------- */
+.techs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 14px; }
+.tech { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.tech-tete { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tech .where { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--cool); }
+.tech h5 { margin: 0; font-family: var(--display); font-size: 22px; font-weight: 600; }
+.tech ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; }
+.tech-lien { margin-top: auto; font-size: 13.5px; color: var(--accent); text-decoration: none; }
+.tech-lien:hover { text-decoration: underline; }
+
 /* ---------- Menu par catégories ---------- */
 .logo { white-space: nowrap; }
 .menu { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
@@ -543,6 +554,10 @@ const S = {
   sn87:{t:"SN 1987A – Wikipedia",u:"https://en.wikipedia.org/wiki/SN_1987A"},
   earthsky:{t:"Safe distance from a supernova – EarthSky",u:"https://earthsky.org/astronomy-essentials/safe-distance-from-a-supernova-earth/"},
   dog:{t:"Star Trek: Picard – What Happened to Romulus? (Den of Geek)",u:"https://www.denofgeek.com/tv/star-trek-picard-what-happened-to-romulus/"},
+  nif:{t:"National Ignition Facility achieves fusion ignition – Laser Focus World",u:"https://www.laserfocusworld.com/lasers-sources/article/14287012/national-ignition-facility-achieves-fusion-ignition"},
+  heph:{t:"Project Hephaistos II – Dyson sphere candidates (MNRAS, 2024)",u:"https://pure.psu.edu/en/publications/project-hephaistos-ii-dyson-sphere-candidates-from-gaia-dr3-2mass/"},
+  penrose:{t:"Penrose process – Physics dictionary",u:"https://physics.it.com/dictionary/penrose-process"},
+  alcu:{t:"Alcubierre drive – Wikipedia",u:"https://en.wikipedia.org/wiki/Alcubierre_drive"},
   kard:{t:"Kardashev scale – Wikipedia",u:"https://www.chise.org/ipns/en.wikipedia-on-ipfs.org/wiki/Kardashev_scale"},
   marsfact:{t:"Mars Fact Sheet – NASA",u:"https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"},
   marsdust:{t:"The Fact and Fiction of Martian Dust Storms – NASA",u:"https://www.nasa.gov/content/the-fact-and-fiction-of-martian-dust-storms"},
@@ -732,9 +747,21 @@ const FICHES = [
     {where:"Si l'humanité atteignait le type I",verdict:"Il faudrait consommer 540 fois plus d'énergie qu'aujourd'hui.",items:["10¹⁶ W ÷ 1,84·10¹³ W ≈ 540 (seuil de Sagan). <span class='tag'>c</span>","Avec la définition moderne (capter toute l'énergie solaire reçue par la Terre, 1,74·10¹⁷ W), c'est ~9 500 fois plus. <span class='tag'>c</span>","Chaque dixième de K correspond à une puissance multipliée par 10 : passer de 0,73 à 1, c'est ×10²·⁷, soit ~500. <span class='tag'>c</span>"]},
     {where:"Une civilisation de type II autour du Soleil",verdict:"Elle capterait 20 000 milliards de fois notre consommation.",items:["4·10²⁶ W ÷ 1,84·10¹³ W ≈ 2·10¹³. <span class='tag'>c</span>","Idée classique pour y arriver : une sphère ou un essaim de capteurs autour de l'étoile, la « sphère de Dyson ». <span class='tag'>m</span>","La forge de Nidavellir, un anneau construit autour d'une étoile pour exploiter son énergie, est une version de cinéma de cette idée."]},
     {where:"Face à TON 618",verdict:"Le quasar dépasse l'échelle entière.",items:["4·10⁴⁰ W ÷ 4·10³⁷ W = 1 000 : TON 618 rayonne autant que mille galaxies comme la nôtre, à lui seul. <span class='tag'>c</span>","Sur l'échelle de Sagan, il serait au niveau ≈ 3,5. Ce n'est pas une civilisation : c'est du gaz qui tombe dans un trou noir. <span class='tag'>c</span>"]}],
+  techs:[
+    {nom:"Fusion nucléaire contrôlée",type:"Vers le type I",statut:"Réalisée en laboratoire",pill:"p-vrai",
+     items:["Le 5 décembre 2022, le National Ignition Facility (États-Unis) a produit 3,15 MJ d'énergie de fusion avec 2,05 MJ de laser sur la cible : la première fois que la fusion rend plus qu'elle ne reçoit. <span class='tag'>s</span>","Gain sur la cible : 3,15 ÷ 2,05 ≈ 1,5. <span class='tag'>c</span>","Ce n'est pas encore une centrale : les lasers consomment bien plus d'électricité qu'ils ne livrent à la cible. <span class='tag'>m</span>","C'est la même réaction qui fait briller le Soleil."]},
+    {nom:"Sphère ou essaim de Dyson",type:"Type II",statut:"Cherchée dans le ciel",pill:"p-exag",
+     items:["Entourer une étoile de capteurs pour récupérer toute sa lumière. Chauffés, ces capteurs brilleraient en infrarouge : c'est cette signature qu'on cherche. <span class='tag'>s</span>","Projet Hephaistos (2024) : environ 5 millions d'objets analysés, 7 candidats, tous des naines rouges avec un excès d'infrarouge. Les auteurs parlent de candidats à étudier, pas de découverte. <span class='tag'>s</span>"],
+     lien:["nidavellir","La forge de Nidavellir"]},
+    {nom:"Processus de Penrose",type:"Type II à III",statut:"Permis, jamais réalisé",pill:"p-hypo",
+     items:["Proposé par Roger Penrose en 1969. Près d'un trou noir en rotation, un objet se coupe en deux : un morceau tombe avec une énergie négative, l'autre ressort avec plus d'énergie qu'au départ. L'énergie gagnée vient de la rotation du trou noir. <span class='tag'>s</span>","Maximum : environ 29 % de la masse-énergie d'un trou noir qui tourne à la vitesse limite. <span class='tag'>s</span>","Pour Gargantua (10⁸ M☉, rotation quasi maximale) : 0,29 × M·c² ≈ 5·10⁵⁴ J, de quoi faire briller le Soleil pendant ~4·10²⁰ ans, 30 milliards de fois l'âge de l'Univers. <span class='tag'>c</span>"],
+     lien:["gargantua","Gargantua"]},
+    {nom:"Propulsion d'Alcubierre (« distorsion »)",type:"Voyage",statut:"Exige de l'énergie négative",pill:"p-faux",
+     items:["Proposée en 1994 : contracter l'espace devant le vaisseau et le dilater derrière. Le vaisseau ne dépasse jamais localement la vitesse de la lumière : c'est l'espace autour de lui qui se déforme. <span class='tag'>s</span>","Problème : il faut une densité d'énergie négative, le même mur que pour le trou de ver. La version d'origine demandait, pour un vaisseau de 200 m, plus de matière exotique que la masse de l'Univers observable. <span class='tag'>s</span>","Alcubierre dit s'être inspiré du « warp » de Star Trek. <span class='tag'>s</span>"],
+     lien:["ver","Trou de ver"]}],
   prose:["Kardashev classe une civilisation selon la puissance qu'elle exploite. Dans sa définition de 1964, le type I valait environ 4·10¹² W, l'ordre de grandeur de la consommation mondiale de l'époque. Les définitions modernes visent toute l'énergie que la planète reçoit de son étoile.","Carl Sagan a proposé une version continue : K = (log₁₀ P − 6) / 10, avec P en watts. Elle donne 1 pour 10¹⁶ W, 2 pour 10²⁶ W et 3 pour 10³⁶ W. C'est elle qui place l'humanité vers 0,73.","Cette échelle mesure une seule chose, la puissance. Elle ne dit rien de l'intelligence, de la culture ou de la durée de vie d'une civilisation."],
   cine:{film:"Avengers: Infinity War (2018)",v:"hypo",vl:"Spéculatif",txt:"Nidavellir, un anneau géant autour d'une étoile pour en capter l'énergie, montre une technologie de civilisation de type II. Aucune structure de ce type n'a jamais été observée."},
-  src:["kard","ton618","myth"]},
+  src:["kard","ton618","myth","nif","heph","penrose","alcu"]},
 
  {id:"ver",tab:"Trou de ver",fic:true,type:"Objet hypothétique · jamais observé",title:"Trou de ver",
   facts:[["1935","Einstein et Rosen : premier « pont » dans les équations"],["1988","Morris et Thorne : version traversable"],["0","trou de ver observé"]],
@@ -1033,7 +1060,14 @@ function afficherFiche(id) {
       <div class="keyfact">${esc(f.key)}</div>
       ${f.specul ? `<div class="specul"><b>Fiche spéculative.</b> ${esc(f.specul)}</div>` : ""}
     </div>
-    ${blocEchelle}${blocAttraction}${blocScenarios}
+    ${blocEchelle}${blocAttraction}${blocScenarios}${f.techs ? `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>Technologies associées</h4></div>
+      <div class="techs">${f.techs.map((t) => `<div class="tech">
+        <div class="tech-tete"><span class="where">${esc(t.type)}</span><span class="pill ${t.pill}">${esc(t.statut)}</span></div>
+        <h5>${esc(t.nom)}</h5>
+        <ul>${t.items.map((i) => `<li>${i}</li>`).join("")}</ul>
+        ${t.lien ? `<a class="tech-lien" href="#${t.lien[0]}">${esc(t.lien[1])} →</a>` : ""}
+      </div>`).join("")}</div>
+      <p class="note">Statuts : réalisé en laboratoire · cherché dans le ciel · permis par la physique mais jamais réalisé · exige une physique qu'on ne sait pas produire.</p></section>` : ""}
     <section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>Ce qu'il faut savoir</h4></div>
       <div class="two">
         <div class="prose">${f.prose.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
