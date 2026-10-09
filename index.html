@@ -332,6 +332,14 @@ h2, h4 { letter-spacing: -.005em; }
 .tech-lien { margin-top: auto; font-size: 13.5px; color: var(--accent); text-decoration: none; }
 .tech-lien:hover { text-decoration: underline; }
 
+
+/* ---------- Étiquettes s / c / m cliquables ---------- */
+.tag { cursor: pointer; transition: border-color .15s, color .15s; }
+.tag:hover, .tag:focus-visible { border-color: var(--accent); color: var(--fg); outline: none; }
+.bulle { position: fixed; z-index: 50; max-width: 280px; background: var(--panel); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; color: var(--fg); box-shadow: 0 12px 30px rgba(0,0,0,.45); backdrop-filter: blur(10px); }
+.bloc-sources.eclaire { animation: eclaire 1.6s ease; border-radius: 10px; }
+@keyframes eclaire { 0%, 40% { box-shadow: 0 0 0 2px var(--accent); background: rgba(240,178,90,.08); } 100% { box-shadow: 0 0 0 0 transparent; background: transparent; } }
+
 /* ---------- Menu par catégories ---------- */
 .logo { white-space: nowrap; }
 .menu { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
@@ -361,12 +369,16 @@ h2, h4 { letter-spacing: -.005em; }
 .drop a b { font-weight: 600; font-size: 15px; }
 .drop a span { font-size: 13px; color: var(--muted); }
 .drop a[aria-current] b { color: var(--accent); }
-.drop-head { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 4px; }
+.drop-head { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 4px; text-decoration: none; }
+a.drop-head { display: block; flex-direction: row; color: var(--accent); }
+a.drop-head:hover { background: transparent; text-decoration: underline; }
 .breadcrumb { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted); }
 .breadcrumb a { color: var(--muted); }
 .cat-group { display: flex; flex-direction: column; gap: 14px; }
 .cat-title { display: flex; align-items: baseline; gap: 12px; }
 .cat-title h3 { color: var(--accent); }
+.lien-cat { color: inherit; text-decoration: none; }
+.lien-cat:hover { text-decoration: underline; }
 .cat-title span { font-size: 13px; color: var(--muted); }
 .vue[hidden] { display: none !important; }
 .vue { display: flex; flex-direction: column; gap: 44px; }
@@ -425,6 +437,17 @@ h2, h4 { letter-spacing: -.005em; }
         <div class="legend"><span><i class="l1"></i>Objet réel</span><span><i class="l3"></i>Objet de fiction (distance donnée pour le film)</span></div>
       </section>
       <div class="stack" style="gap:36px" id="categories"></div>
+    </div>
+
+    <div class="vue" id="vue-categorie" hidden>
+      <nav class="breadcrumb" id="filCat" aria-label="Fil d'Ariane"></nav>
+      <header class="hero">
+        <div class="eyebrow">Catégorie</div>
+        <h1 class="small" id="catTitre"></h1>
+        <p class="lede" id="catDesc"></p>
+      </header>
+      <div class="cards" id="catCartes"></div>
+      <nav class="pager" aria-label="Retour"><a class="btn" href="#">← Accueil</a></nav>
     </div>
 
     <div class="vue" id="vue-astre" hidden>
@@ -777,18 +800,18 @@ const FICHES = [
    [id de la fiche, nom dans le menu, description courte]
    ===================================================================== */
 const CATEGORIES = [
-  { id: "trous-noirs", nom: "Trous noirs", items: [
+  { id: "trous-noirs", desc: "Les objets les plus denses de l'Univers, des trous noirs de cinéma aux monstres réellement mesurés.", nom: "Trous noirs", items: [
     ["gargantua", "Gargantua", "Interstellar face aux vrais trous noirs"],
     ["ton618", "TON 618 vs Sgr A*", "Le plus massif connu face au nôtre"] ] },
-  { id: "neutrons", nom: "Étoiles à neutrons", items: [
+  { id: "neutrons", desc: "Le cœur effondré des étoiles massives : une cuillère de leur matière pèse des milliards de tonnes.", nom: "Étoiles à neutrons", items: [
     ["nidavellir", "La forge de Nidavellir", "Infinity War face au pulsar du Crabe"],
     ["doubles", "Étoiles à neutrons doubles", "Hulse-Taylor et la fusion GW170817"] ] },
-  { id: "etoiles", nom: "Étoiles", items: [
+  { id: "etoiles", desc: "Systèmes doubles et étoiles qui explosent, de Tatooine à Bételgeuse.", nom: "Étoiles", items: [
     ["tatooine", "Tatooine / Kepler-16b", "Star Wars face à une vraie planète à deux soleils"],
     ["supernova", "Supernova", "Bételgeuse à la place du Soleil"] ] },
-  { id: "planetes", nom: "Planètes", items: [
+  { id: "planetes", desc: "Les planètes de cinéma face aux données des sondes spatiales.", nom: "Planètes", items: [
     ["mars", "Mars", "Seul sur Mars face à la vraie atmosphère martienne"] ] },
-  { id: "hypothetique", nom: "Hypothétique", items: [
+  { id: "hypothetique", desc: "Ce que la physique autorise sur le papier, mais que personne n'a jamais observé.", nom: "Hypothétique", items: [
     ["ver", "Trou de ver", "Interstellar face à la relativité générale"],
     ["kardashev", "Échelle de Kardashev", "Civilisations et énergie, face au quasar TON 618"] ] }
 ];
@@ -1019,7 +1042,7 @@ function afficherFiche(id) {
   const f = FICHES[i];
   document.title = f.tab + " · Hors-Champ";
   const cat = CATEGORIES.find((k) => k.items.some((it) => it[0] === f.id));
-  $("#fil").innerHTML = `<a href="#">Accueil</a><span aria-hidden="true">›</span><span>${esc(cat.nom)}</span><span aria-hidden="true">›</span><span aria-current="page">${esc(f.tab)}</span>`;
+  $("#fil").innerHTML = `<a href="#">Accueil</a><span aria-hidden="true">›</span><a href="#cat-${cat.id}">${esc(cat.nom)}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(f.tab)}</span>`;
 
   // Onglets : les autres comparaisons de la même catégorie
   $("#onglets").innerHTML = cat.items.map(([id2, nom]) =>
@@ -1075,16 +1098,18 @@ function afficherFiche(id) {
           <div class="cine"><h3>Au cinéma</h3><div class="film">${esc(f.cine.film)}</div>
             <span class="pill ${pastille}">${esc(f.cine.vl)}</span><p>${esc(f.cine.txt)}</p></div>
           ${f.todo ? `<div class="todo-note">${esc(f.todo)}</div>` : ""}
-          <div class="stack" style="gap:8px"><h3>Sources</h3><ul class="src">${f.src.map((k) =>
+          <div class="stack bloc-sources" style="gap:8px"><h3>Sources</h3><ul class="src">${f.src.map((k) =>
             `<li><a href="${S[k].u}" target="_blank" rel="noopener">${esc(S[k].t)}</a></li>`).join("")}</ul></div>
         </aside>
       </div>
     </section>`;
 
   // Précédent / suivant
-  const prec = FICHES[(i - 1 + FICHES.length) % FICHES.length], suiv = FICHES[(i + 1) % FICHES.length];
-  $("#pager").innerHTML = `<a class="btn" href="#${prec.id}">← ${esc(prec.tab)}</a>
-    <a class="btn primary" href="#${suiv.id}">${esc(suiv.tab)} →</a>`;
+  const rang = cat.items.findIndex((it) => it[0] === f.id);
+  const suivCat = cat.items[rang + 1];
+  const suiv = suivCat ? FICHES.find((x) => x.id === suivCat[0]) : FICHES[(i + 1) % FICHES.length];
+  $("#pager").innerHTML = `<a class="btn" href="#cat-${cat.id}">← ${esc(cat.nom)}</a>
+    <a class="btn primary" href="#${suiv.id}">${suivCat ? "" : "Catégorie suivante : "}${esc(suiv.tab)} →</a>`;
 
   if (f.scale) {
     const echelle = creerEchelle($("#toile"), $("#zoom"), $("#lecture"), $("#horsCadre"), f.scale.items, f.scale.view);
@@ -1406,6 +1431,62 @@ addEventListener("resize", () => { if (!$("#vue-creer").hidden) majCreer(); });
 
   </script>
 
+  <!-- ===================== 3 ter. ÉTIQUETTES ===================== -->
+  <script>
+
+/* =====================================================================
+   ÉTIQUETTES s / c / m : explication au survol, action au clic
+   ===================================================================== */
+const SENS_TAG = {
+  s: "Sourcé : valeur lue dans une source citée en bas de la fiche. Clique pour y aller.",
+  c: "Calcul : dérivé de valeurs sourcées avec des formules simples (r_s = 2GM/c², g = GM/d²…).",
+  m: "De mémoire : information connue mais pas encore vérifiée dans une source."
+};
+function decorerTags(racine) {
+  racine.querySelectorAll(".tag").forEach((t) => {
+    const k = t.textContent.trim();
+    if (!SENS_TAG[k] || t.dataset.ok) return;
+    t.dataset.ok = "1"; t.title = SENS_TAG[k]; t.tabIndex = 0; t.setAttribute("role", "button");
+    t.setAttribute("aria-label", SENS_TAG[k]);
+  });
+}
+let bulle = null;
+function fermerBulle() { if (bulle) { bulle.remove(); bulle = null; } }
+function actionTag(t) {
+  const k = t.textContent.trim();
+  const fiche = t.closest(".fiche");
+  fermerBulle();
+  if (k === "s" && fiche) {
+    const bloc = fiche.querySelector(".bloc-sources");
+    bloc.scrollIntoView({ behavior: mouvementReduit ? "auto" : "smooth", block: "center" });
+    bloc.classList.remove("eclaire"); void bloc.offsetWidth; bloc.classList.add("eclaire");
+    return;
+  }
+  bulle = document.createElement("div");
+  bulle.className = "bulle"; bulle.setAttribute("role", "status");
+  bulle.textContent = SENS_TAG[k] || "";
+  document.body.appendChild(bulle);
+  yBulle = scrollY;
+  const r = t.getBoundingClientRect();
+  bulle.style.left = Math.max(8, Math.min(r.left - 20, innerWidth - bulle.offsetWidth - 8)) + "px";
+  bulle.style.top = (r.bottom + 8 + bulle.offsetHeight > innerHeight ? r.top - bulle.offsetHeight - 8 : r.bottom + 8) + "px";
+}
+document.addEventListener("click", (e) => {
+  const t = e.target.closest(".tag");
+  if (t && SENS_TAG[t.textContent.trim()]) { actionTag(t); return; }
+  fermerBulle();
+});
+document.addEventListener("keydown", (e) => {
+  const t = e.target.closest && e.target.closest(".tag");
+  if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); actionTag(t); }
+});
+let yBulle = 0;
+addEventListener("scroll", () => { if (bulle && Math.abs(scrollY - yBulle) > 60) fermerBulle(); }, { passive: true });
+new MutationObserver(() => decorerTags(document.body)).observe(document.querySelector("main"), { childList: true, subtree: true });
+decorerTags(document.body);
+
+  </script>
+
   <!-- ===================== 4. MENU ET NAVIGATION ===================== -->
   <script>
 /* =====================================================================
@@ -1417,7 +1498,7 @@ function construireMenu() {
   m.innerHTML = CATEGORIES.map((k) => `
     <li><button class="menu-btn" type="button" aria-expanded="false" aria-controls="drop-${k.id}" data-cat="${k.id}">${esc(k.nom)}<svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="drop" id="drop-${k.id}">
-        <div class="drop-head">${esc(k.nom)} · comparaisons</div>
+        <a class="drop-head" href="#cat-${k.id}" data-id="cat-${k.id}">${esc(k.nom)} · tout voir →</a>
         ${k.items.map(([id, nom, desc]) => `<a href="#${id}" data-id="${id}"><b>${esc(nom)}</b><span>${esc(desc)}</span></a>`).join("")}
       </div></li>`).join("") +
     `<li><button class="menu-btn" type="button" aria-expanded="false" aria-controls="drop-outils" data-cat="outils">Outils<svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -1594,7 +1675,7 @@ function construireAccueil() {
   dessinerRegle($("#regle"));
   $("#categories").innerHTML = CATEGORIES.map((k) => `
     <section class="cat-group" aria-label="${esc(k.nom)}">
-      <div class="cat-title"><h3>${esc(k.nom)}</h3><span>${k.items.length} comparaison${k.items.length > 1 ? "s" : ""}</span></div>
+      <div class="cat-title"><h3><a class="lien-cat" href="#cat-${k.id}">${esc(k.nom)} →</a></h3><span>${k.items.length} comparaison${k.items.length > 1 ? "s" : ""}</span></div>
       <div class="cards">${k.items.map(([id]) => {
         const f = FICHES.find((x) => x.id === id);
         return `<a class="card${f.fic ? " fic" : ""}" href="#${f.id}"><span class="type">${esc(f.type)}</span><h4>${esc(f.tab)}</h4><p>${esc(f.key)}</p><span class="go">Voir la comparaison →</span></a>`;
@@ -1623,13 +1704,26 @@ document.addEventListener("click", (e) => {
   aller(decodeURIComponent(a.getAttribute("href").slice(1)));
 });
 
+function carteFiche(f) {
+  return `<a class="card${f.fic ? " fic" : ""}" href="#${f.id}"><span class="type">${esc(f.type)}</span><h4>${esc(f.tab)}</h4><p>${esc(f.key)}</p><span class="go">Voir la comparaison →</span></a>`;
+}
+function afficherCategorie(k) {
+  document.title = k.nom + " · Hors-Champ";
+  $("#filCat").innerHTML = `<a href="#">Accueil</a><span aria-hidden="true">›</span><span aria-current="page">${esc(k.nom)}</span>`;
+  $("#catTitre").textContent = k.nom;
+  $("#catDesc").textContent = k.desc;
+  $("#catCartes").innerHTML = k.items.map(([id]) => carteFiche(FICHES.find((x) => x.id === id))).join("");
+}
+
 function router() {
   const cle = cleCourante;
   const estFiche = FICHES.some((f) => f.id === cle);
-  const vue = estFiche ? "astre" : ["comparateur", "methode", "creer"].includes(cle) ? cle : "accueil";
+  const catVue = cle.startsWith("cat-") ? CATEGORIES.find((k) => "cat-" + k.id === cle) : null;
+  const vue = estFiche ? "astre" : catVue ? "categorie" : ["comparateur", "methode", "creer"].includes(cle) ? cle : "accueil";
   const changer = () => {
     document.querySelectorAll(".vue").forEach((v) => { v.hidden = v.id !== "vue-" + vue; });
     if (vue === "astre") afficherFiche(cle);
+    else if (vue === "categorie") afficherCategorie(catVue);
     else document.title = { accueil: "Hors-Champ", comparateur: "Comparateur · Hors-Champ", methode: "Méthode · Hors-Champ", creer: "Crée ton trou noir · Hors-Champ" }[vue];
     if (vue === "comparateur") { mettreAJour(); lancerTests(); }
     if (vue === "accueil") requestAnimationFrame(dessinerHeros);
@@ -1637,7 +1731,7 @@ function router() {
     document.querySelectorAll(".drop a").forEach((a) => a.toggleAttribute("aria-current", a.dataset.id === cle));
     document.querySelectorAll(".menu-btn").forEach((b) => {
       const cat = CATEGORIES.find((k) => k.id === b.dataset.cat);
-      b.classList.toggle("on", cat ? estFiche && cat.items.some((it) => it[0] === cle) : ["creer", "comparateur", "methode"].includes(vue));
+      b.classList.toggle("on", cat ? (estFiche && cat.items.some((it) => it[0] === cle)) || (catVue && catVue.id === cat.id) : ["creer", "comparateur", "methode"].includes(vue));
     });
     document.querySelectorAll(".menu-link").forEach((a) => a.classList.toggle("on", a.dataset.vue === vue));
     window.scrollTo(0, 0);
