@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hors-Champ</title>
+  <meta name="description" content="Hors-Champ : l'astronomie que les films laissent hors du cadre. Trous noirs, étoiles à neutrons et planètes du cinéma, comparés à ce que la science a mesuré.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230a0d1a'/%3E%3Cellipse cx='16' cy='16' rx='13' ry='4' fill='none' stroke='%23f0b25a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23000' stroke='%23f0b25a' stroke-width='1.5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..700&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
+  <style>
+/* =====================================================================
+   Hors-Champ — feuille de style commune à toutes les pages
+   Thème unique : ciel nocturne. Toutes les couleurs sont des variables.
+   ===================================================================== */
+:root {
+  --bg: #05060e;      /* fond de page */
+  --bg-2: rgba(13, 16, 36, .78);    /* fond des encarts */
+  --panel: rgba(17, 21, 46, .72);   /* fond des fiches */
+  --line: #262c56;    /* traits et bordures */
+  --line-2: #3a4380;
+  --fg: #ebe7dc;      /* texte principal */
+  --muted: #959bb8;   /* texte secondaire */
+  --accent: #f0b25a;  /* ambre : disque d'accrétion, fiction */
+  --cool: #86b4ff;    /* bleu : objets réels */
+  --star: #ffd59a;
+  --ok: #7fd3a1; --warn: #f0b25a; --bad: #ff7d7d; --hypo: #c9a0ff;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+img { max-width: 100%; }
+a { color: var(--cool); text-underline-offset: 3px; }
+code { font-family: var(--mono); font-size: .9em; }
+#ciel { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+/* ---------- Barre de navigation ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(10, 13, 26, .88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-in {
+  max-width: 1100px; margin: 0 auto; padding-inline: 20px;
+  height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.logo {
+  font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: -.01em;
+  color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 10px;
+}
+.logo svg { flex: none; }
+.nav-links { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.nav-links a {
+  display: block; padding: 7px 12px; border-radius: 8px;
+  color: var(--muted); text-decoration: none; font-size: 15px;
+}
+.nav-links a:hover { color: var(--fg); background: var(--bg-2); }
+.nav-links a[aria-current="page"] { color: var(--fg); background: var(--panel); }
+.burger {
+  display: none; background: none; border: 1px solid var(--line); color: var(--fg);
+  border-radius: 8px; width: 40px; height: 40px; cursor: pointer; font-size: 18px;
+}
+
+/* ---------- Mise en page ---------- */
+main {
+  position: relative; z-index: 1; flex: 1;
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  padding-inline: 20px; padding-block: 40px 64px;
+  display: flex; flex-direction: column; gap: 44px;
+}
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(40px, 8vw, 84px); line-height: .95; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1.small { font-size: clamp(32px, 5.5vw, 56px); }
+h2 { font-family: var(--display); font-weight: 600; font-size: clamp(26px, 3.6vw, 38px); margin: 0; line-height: 1.1; text-wrap: balance; }
+h3 { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0; font-weight: 500; }
+h4 { font-family: var(--display); font-weight: 600; font-size: 20px; margin: 0; }
+.lede { max-width: 62ch; color: var(--muted); margin: 0; font-size: 17px; }
+.hero { display: flex; flex-direction: column; gap: 14px; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* ---------- Pied de page ---------- */
+.foot {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--line); background: var(--bg);
+}
+.foot-in {
+  max-width: 1100px; margin: 0 auto; padding-inline: 20px; padding-block: 24px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+  font-size: 13px; color: var(--muted);
+}
+
+/* ---------- Règle des distances ---------- */
+.ruler-scroll { overflow-x: auto; padding-bottom: 6px; }
+.ruler { position: relative; min-width: 820px; height: 250px; }
+.axis { position: absolute; left: 0; right: 0; top: 190px; height: 1px; background: var(--line); }
+.tick { position: absolute; top: 184px; width: 1px; height: 13px; background: var(--line); }
+.tick span { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+.mk { position: absolute; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--fg); padding: 0; text-decoration: none; }
+.mk .lbl { font-size: 13px; white-space: nowrap; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-2); transition: border-color .15s, background .15s; }
+.mk .stem { width: 1px; background: var(--line); }
+.mk .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--cool); border: 2px solid var(--cool); }
+.mk.fic .dot { background: var(--accent); border-color: var(--accent); transform: rotate(45deg); border-radius: 2px; }
+.mk.fic .lbl { color: var(--accent); }
+.mk:hover .lbl, .mk.on .lbl { border-color: var(--accent); background: var(--panel); }
+.mk:focus-visible { outline: none; }
+.mk:focus-visible .lbl { outline: 2px solid var(--accent); outline-offset: 2px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+.legend .l1 { background: var(--cool); border-radius: 50%; }
+.legend .l3 { background: var(--accent); border-radius: 2px; transform: rotate(45deg); }
+
+/* ---------- Grille des cartes (accueil) ---------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.card {
+  display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px;
+  color: var(--fg); text-decoration: none; transition: border-color .15s, transform .15s;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.card .type { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--cool); }
+.card.fic .type { color: var(--accent); }
+.card h4 { font-size: 22px; }
+.card p { margin: 0; font-size: 14.5px; color: var(--muted); }
+.card .go { margin-top: auto; font-size: 13px; color: var(--accent); }
+
+/* ---------- Boutons, puces ---------- */
+.btn, .chip, .tab {
+  font: inherit; color: var(--fg); background: transparent;
+  border: 1px solid var(--line); border-radius: 999px; cursor: pointer; text-decoration: none;
+}
+.tab { font-size: 14px; padding: 6px 14px; display: inline-block; }
+.tab[aria-current="page"] { background: var(--accent); color: #1b1306; border-color: var(--accent); font-weight: 600; }
+.chip { font-size: 12.5px; padding: 4px 11px; color: var(--muted); }
+.chip:hover, .tab:hover { color: var(--fg); border-color: var(--line-2); }
+.btn { font-size: 15px; padding: 9px 18px; font-weight: 600; }
+.btn.primary { background: var(--accent); color: #1b1306; border-color: var(--accent); }
+.tab:focus-visible, .chip:focus-visible, .btn:focus-visible, input:focus-visible, select:focus-visible, .burger:focus-visible, .nav-links a:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Fiche ---------- */
+.fiche { display: flex; flex-direction: column; gap: 30px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+.fhead { display: flex; flex-direction: column; gap: 14px; }
+.ftype { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cool); }
+.ftype.fic { color: var(--accent); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.fact { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fact b { font-family: var(--mono); font-weight: 500; font-size: 18px; font-variant-numeric: tabular-nums; }
+.fact span { font-size: 13px; color: var(--muted); }
+.keyfact { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; font-size: 17px; max-width: 70ch; }
+.block { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 24px; }
+.bhead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.bnum { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+.cv { position: relative; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.cv canvas { display: block; width: 100%; height: 380px; }
+.zoomrow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: 13px; color: var(--muted); }
+.zoomrow input { width: 100%; accent-color: var(--accent); }
+.readout { font-family: var(--mono); font-size: 12.5px; color: var(--fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.note { font-size: 13px; color: var(--muted); margin: 0; max-width: 75ch; }
+.empty { padding: 28px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 10px; }
+
+.tscroll { overflow-x: auto; }
+table.cmp { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 520px; }
+table.cmp th, table.cmp td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-weight: 500; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+table.cmp td { font-variant-numeric: tabular-nums; }
+table.cmp td:first-child { color: var(--muted); }
+
+.scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.sc { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.sc .where { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--cool); }
+.sc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; }
+.sc .verdict { font-weight: 600; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 10.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; }
+.prose p { margin: 0 0 10px; max-width: 66ch; }
+.prose p:last-child { margin-bottom: 0; }
+.fside { display: flex; flex-direction: column; gap: 18px; }
+.cine { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.cine .film { font-family: var(--display); font-weight: 600; font-size: 18px; }
+.cine p { margin: 0; font-size: 14.5px; }
+.pill { align-self: flex-start; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid currentColor; }
+.p-vrai { color: var(--ok); } .p-exag { color: var(--warn); } .p-faux { color: var(--bad); } .p-hypo { color: var(--hypo); } .p-none { color: var(--muted); }
+.src { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.src a { word-break: break-word; }
+.todo-note { font-size: 13px; color: var(--warn); border: 1px dashed var(--warn); border-radius: 8px; padding: 8px 10px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* ---------- Comparateur ---------- */
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+.pick { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; align-items: end; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label { font-size: 13px; color: var(--muted); }
+select {
+  font: inherit; color: var(--fg); background: var(--bg-2);
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%;
+}
+.vs { font-family: var(--display); font-weight: 800; color: var(--accent); padding-bottom: 10px; }
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.res { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.res .lab { font-size: 13px; color: var(--muted); }
+.res .val { font-family: var(--mono); font-size: 20px; font-variant-numeric: tabular-nums; word-break: break-word; }
+.res.missing .val { color: var(--warn); font-size: 14px; font-family: var(--body); }
+.tests { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.tests li { display: flex; gap: 10px; align-items: baseline; }
+.tests .st { font-family: var(--mono); font-size: 12px; padding: 1px 7px; border-radius: 4px; border: 1px solid currentColor; flex: none; }
+.st.pass { color: var(--ok); } .st.fail { color: var(--bad); } .st.todo { color: var(--warn); }
+pre { margin: 0; background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--fg); }
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 760px) {
+  .fiche, .panel { padding: 18px; }
+  .two { grid-template-columns: 1fr; }
+  .cv canvas { height: 320px; }
+  .zoomrow { grid-template-columns: 1fr; }
+  .pick { grid-template-columns: 1fr; }
+  .vs { padding-bottom: 0; }
+  .burger { display: block; }
+  .nav-links {
+    display: none; position: absolute; top: 60px; left: 0; right: 0;
+    flex-direction: column; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 20px 14px;
+  }
+  .nav-links.open { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- Fluidité ---------- */
+/* Transition douce entre les pages (navigateurs récents ; ignorée ailleurs) */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; }
+/* Apparition en douceur : le contenu part d'un état visible, seul un léger glissement est animé */
+@keyframes monte { from { transform: translateY(10px); } to { transform: none; } }
+main > * { animation: monte .5s cubic-bezier(.2, .7, .2, 1) both; }
+main > *:nth-child(2) { animation-delay: .06s; }
+main > *:nth-child(3) { animation-delay: .12s; }
+main > *:nth-child(4) { animation-delay: .18s; }
+.card, .res, .sc { transition: border-color .2s, transform .25s cubic-bezier(.2, .7, .2, 1), background .2s; }
+.sc:hover, .res:hover { border-color: var(--line-2); }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  main > * { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+
+
+/* ---------- Habillage premium ---------- */
+#ciel { height: 115vh; will-change: transform; }
+.fiche, .panel, .card, .drop { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.nav { background: rgba(5, 6, 14, .72); }
+h2, h4 { letter-spacing: -.005em; }
+.logo em { font-style: italic; font-weight: 500; color: var(--accent); }
+
+/* ---------- Héros TON 618 ---------- */
+.hero-ton { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); min-height: clamp(480px, 58vw, 720px); display: flex; align-items: center; background: #03040a; }
+.hero-ton canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero-txt { position: relative; z-index: 1; max-width: min(560px, 52%); padding: clamp(24px, 4vw, 56px); display: flex; flex-direction: column; gap: 18px; }
+.hero-txt h1 { font-size: clamp(40px, 5.6vw, 76px); line-height: 1.02; letter-spacing: -.02em; }
+.hero-txt h1 em { font-style: italic; font-weight: 500; color: var(--star); }
+.hero-txt .lede { color: #c9cbe0; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.legende { position: absolute; z-index: 1; right: 18px; bottom: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: rgba(235, 231, 220, .55); text-align: right; max-width: 60%; }
+.marque { display: flex; flex-direction: column; gap: 8px; }
+.marque h2 { font-size: clamp(30px, 4vw, 46px); }
+@media (max-width: 760px) {
+  .hero-ton { flex-direction: column; align-items: stretch; min-height: 0; }
+  .hero-ton canvas { position: relative; height: 300px; }
+  .hero-txt { max-width: none; padding: 22px 20px 28px; }
+  .legende { position: static; max-width: none; text-align: left; padding: 0 20px 18px; }
+}
+
+
+/* ---------- Barres de puissance (Kardashev) ---------- */
+.barres { display: flex; flex-direction: column; gap: 10px; }
+.barre { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto; gap: 14px; align-items: center; font-size: 14px; }
+.bn { color: var(--fg); }
+.bt { height: 10px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.bf { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(134,180,255,.35), var(--cool)); }
+.barre.seuil .bf { background: linear-gradient(90deg, rgba(201,160,255,.3), var(--hypo)); }
+.barre.seuil .bn { color: var(--hypo); }
+.barre.extreme .bf { background: linear-gradient(90deg, rgba(240,178,90,.35), var(--accent)); }
+.barre.extreme .bn { color: var(--accent); }
+.bv { min-width: 140px; text-align: right; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.specul { border: 1px dashed var(--hypo); color: #dcc8ff; border-radius: 10px; padding: 10px 14px; font-size: 14.5px; max-width: 75ch; }
+@media (max-width: 760px) { .barre { grid-template-columns: 1fr auto; } .barre .bt { grid-column: 1 / -1; grid-row: 2; } }
+
+
+/* ---------- Crée ton trou noir ---------- */
+.masse-tete { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.masse-tete label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-family: var(--mono); }
+#masseLue { font-family: var(--display); font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: var(--star); }
+.curseur { width: 100%; accent-color: var(--accent); height: 28px; cursor: pointer; }
+.echelle-masse { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.verdict-creer { margin: 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 26px); line-height: 1.3; text-wrap: balance; }
+.chip.actif { border-color: var(--accent); color: var(--fg); }
+#resCreer { grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); }
+.etapes { list-style: none; counter-reset: e; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 34px 110px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.etapes li::before { content: counter(e, decimal-leading-zero); font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.etapes li b { font-family: var(--display); font-size: 18px; }
+@media (max-width: 760px) { .etapes li { grid-template-columns: 30px minmax(0, 1fr); } .etapes li span { grid-column: 2; } }
+
+/* ---------- Menu par catégories ---------- */
+.logo { white-space: nowrap; }
+.menu { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.menu > li { position: relative; }
+.menu-btn, .menu-link {
+  position: relative; font: inherit; font-size: 15px; color: var(--muted); background: none; border: 0; cursor: pointer;
+  padding: 8px 12px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.menu-btn:hover, .menu-link:hover, .menu-btn[aria-expanded="true"] { color: var(--fg); background: var(--bg-2); }
+.menu-btn.on, .menu-link.on { color: var(--fg); }
+.menu-btn.on::after, .menu-link.on::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 2px; height: 2px; border-radius: 2px; background: var(--accent); }
+.menu-btn .chev { flex: none; transition: transform .2s; }
+.menu-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.menu-btn:focus-visible, .menu-link:focus-visible, .drop a:focus-visible, .breadcrumb a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.drop {
+  position: absolute; top: calc(100% + 10px); left: 0; min-width: 330px;
+  background: var(--panel); border: 1px solid var(--line-2); border-radius: 12px; padding: 8px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  display: flex; flex-direction: column; gap: 2px;
+  opacity: 0; transform: translateY(-6px); pointer-events: none; visibility: hidden;
+  transition: opacity .18s, transform .18s, visibility 0s .18s;
+}
+.menu > li:nth-child(n+3) .drop { left: auto; right: 0; }
+.drop.open { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition: opacity .18s, transform .18s; }
+.drop a { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 8px; color: var(--fg); text-decoration: none; }
+.drop a:hover, .drop a[aria-current] { background: var(--bg-2); }
+.drop a b { font-weight: 600; font-size: 15px; }
+.drop a span { font-size: 13px; color: var(--muted); }
+.drop a[aria-current] b { color: var(--accent); }
+.drop-head { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 4px; }
+.breadcrumb { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted); }
+.breadcrumb a { color: var(--muted); }
+.cat-group { display: flex; flex-direction: column; gap: 14px; }
+.cat-title { display: flex; align-items: baseline; gap: 12px; }
+.cat-title h3 { color: var(--accent); }
+.cat-title span { font-size: 13px; color: var(--muted); }
+.vue[hidden] { display: none !important; }
+.vue { display: flex; flex-direction: column; gap: 44px; }
+@media (max-width: 1180px) {
+  .burger { display: block; }
+  .menu {
+    display: none; position: absolute; top: 60px; left: 0; right: 0; max-height: calc(100vh - 60px); overflow-y: auto;
+    flex-direction: column; align-items: stretch; gap: 4px;
+    background: var(--bg); border-bottom: 1px solid var(--line); padding: 10px 16px 18px;
+  }
+  .menu.open { display: flex; }
+  .menu-btn { width: 100%; justify-content: space-between; }
+  .menu-btn.on::after, .menu-link.on::after { display: none; }
+  .menu > li:nth-child(n+3) .drop { right: auto; }
+  .drop { position: static; min-width: 0; box-shadow: none; border: 0; background: transparent; padding: 0 0 6px 10px; display: none; opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition: none; }
+  .drop.open { display: flex; }
+}
+
+  </style>
+</head>
+<body>
+  <canvas id="ciel" aria-hidden="true"></canvas>
+
+  <nav class="nav" aria-label="Navigation principale">
+    <div class="nav-in">
+      <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="16" rx="14" ry="4.5" fill="none" stroke="#f0b25a" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="#000" stroke="#f0b25a" stroke-width="1.5"/></svg><span>Hors-<em>Champ</em></span></a>
+      <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">☰</button>
+      <ul class="menu" id="menu"></ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="vue" id="vue-accueil">
+      <section class="hero-ton" aria-labelledby="t-hero">
+        <canvas id="heroTon" role="img" aria-label="Vue d'artiste du trou noir TON 618 : une ombre noire entourée d'un disque de gaz incandescent déformé par la gravité"></canvas>
+        <div class="hero-txt">
+          <div class="eyebrow">TON 618 · à 10,8 milliards d'années-lumière</div>
+          <h1 id="t-hero">66 milliards de Soleils. <em>Un seul trou noir.</em></h1>
+          <p class="lede">Mis à la place du Soleil, son horizon avalerait tout le système solaire, Neptune comprise. Bienvenue hors du cadre des films.</p>
+          <div class="cta">
+            <a class="btn primary" href="#ton618">Explorer TON 618</a>
+            <a class="btn" href="#creer">Crée ton trou noir</a>
+          </div>
+        </div>
+        <p class="legende">Vue d'artiste générée par le site · aucune image réelle de TON 618 n'existe à ce niveau de détail</p>
+      </section>
+
+      <header class="marque">
+        <div class="eyebrow">Hors-Champ · l'astronomie derrière les films</div>
+        <h2>Ce que l'écran montre, ce que la physique impose.</h2>
+        <p class="lede">Gargantua, la forge de Nidavellir, Tatooine, la tempête de Seul sur Mars… Chaque astre est mis à l'échelle face au Soleil, comparé à de vrais objets, puis placé à la place du Soleil pour voir ce qui arriverait à la Terre.</p>
+      </header>
+      <section class="stack" aria-labelledby="t-regle">
+        <h3 id="t-regle">Distance depuis la Terre · années-lumière · échelle logarithmique</h3>
+        <div class="ruler-scroll"><div class="ruler" id="regle"></div></div>
+        <div class="legend"><span><i class="l1"></i>Objet réel</span><span><i class="l3"></i>Objet de fiction (distance donnée pour le film)</span></div>
+      </section>
+      <div class="stack" style="gap:36px" id="categories"></div>
+    </div>
+
+    <div class="vue" id="vue-astre" hidden>
+      <div class="stack" style="gap:14px">
+        <nav class="breadcrumb" id="fil" aria-label="Fil d'Ariane"></nav>
+        <nav class="tabs" id="onglets" aria-label="Comparaisons de la catégorie"></nav>
+      </div>
+      <article class="fiche" id="fiche"></article>
+      <nav class="pager" id="pager" aria-label="Comparaison précédente ou suivante"></nav>
+    </div>
+
+    <div class="vue" id="vue-comparateur" hidden>
+      <header class="hero">
+        <div class="eyebrow">Codé par Raphaël</div>
+        <h1 class="small">Comparateur de trous noirs</h1>
+        <p class="lede">Choisis deux trous noirs. Le site calcule le rapport de leurs masses, la taille de leur horizon et l'attraction qu'ils exercent à la distance Terre-Soleil.</p>
+      </header>
+      <section class="panel" aria-label="Choix des trous noirs">
+        <div class="pick">
+          <div class="field"><label for="trouA">Trou noir A</label><select id="trouA"></select></div>
+          <span class="vs" aria-hidden="true">vs</span>
+          <div class="field"><label for="trouB">Trou noir B</label><select id="trouB"></select></div>
+        </div>
+        <div class="results" id="resultats"></div>
+        <div class="cv"><canvas id="duo" role="img" aria-label="Les deux horizons dessinés à la même échelle"></canvas></div>
+      </section>
+      <section class="panel" aria-labelledby="t-tests">
+        <div class="bhead"><h4 id="t-tests">Tests du code</h4><span class="readout" id="score"></span></div>
+        <ul class="tests" id="tests"></ul>
+        <p class="note">Les fonctions à écrire sont dans ce fichier : cherche « À TOI DE CODER » (Ctrl+F dans VS Code). Enregistre, puis recharge la page.</p>
+      </section>
+    </div>
+
+    <div class="vue" id="vue-creer" hidden>
+      <header class="hero">
+        <div class="eyebrow">Outil interactif</div>
+        <h1 class="small">Crée ton trou noir</h1>
+        <p class="lede">Choisis une masse. Le site calcule la taille de l'horizon, l'attraction qu'il exercerait sur la Terre, et ce qui arriverait s'il prenait la place du Soleil.</p>
+      </header>
+
+      <section class="panel" aria-label="Réglage de la masse">
+        <div class="masse-tete">
+          <label for="masseLog">Masse du trou noir</label>
+          <output id="masseLue" for="masseLog"></output>
+        </div>
+        <input id="masseLog" class="curseur" type="range" min="0" max="11" step="0.001" value="6.6332">
+        <div class="echelle-masse" aria-hidden="true"><span>1 M☉</span><span>1 000</span><span>1 million</span><span>1 milliard</span><span>100 milliards</span></div>
+        <div class="chips" id="presets"><span class="note">Essaie :</span></div>
+      </section>
+
+      <section class="panel" aria-label="Résultat">
+        <div class="cv"><canvas id="toileCreer" role="img" aria-label="Horizon du trou noir comparé aux objets du système solaire"></canvas></div>
+        <p class="verdict-creer" id="verdictCreer"></p>
+        <div class="results" id="resCreer"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="t-effets">
+        <div class="bhead"><h4 id="t-effets">Effets sur la Terre s'il prenait la place du Soleil</h4></div>
+        <ol class="etapes" id="effetsTerre"></ol>
+        <p class="note">Calculs : r_s = 2GM/c², g = GM/d², chute libre t = (π/2)·√(d³/2GM), marée Δa = 2GM·L/r³ avec L = 2 m. Les fonctions viennent du comparateur. Trou noir supposé sans rotation (un trou noir qui tourne vite, comme Gargantua, a un horizon jusqu'à deux fois plus petit). Mécanique de Newton hors de l'horizon : ce sont des ordres de grandeur.</p>
+      </section>
+    </div>
+
+    <div class="vue" id="vue-methode" hidden>
+      <header class="hero">
+        <div class="eyebrow">Méthode</div>
+        <h1 class="small">Méthode & sources</h1>
+        <p class="lede">Chaque chiffre du site porte une étiquette qui dit d'où il vient.</p>
+      </header>
+      <section class="panel">
+        <div class="tscroll"><table class="cmp">
+          <thead><tr><th>Étiquette</th><th>Sens</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag">s</span> sourcé</td><td>Valeur lue dans la source citée en bas de la fiche.</td><td>Masse de Sgr A* : 4,297 millions de masses solaires.</td></tr>
+            <tr><td><span class="tag">c</span> calcul</td><td>Dérivé de valeurs sourcées avec r_s = 2GM/c², g = GM/d² et les lois de Kepler.</td><td>Attraction de Sgr A* à 1 UA : 2,5·10⁴ m/s².</td></tr>
+            <tr><td><span class="tag">m</span> de mémoire</td><td>Information connue mais pas encore vérifiée dans une source. À remplacer.</td><td>Absorption par la poussière galactique.</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Les scénarios « et si » supposent qu'un astre en remplace un autre instantanément et utilisent la mécanique de Newton, hors de l'horizon des trous noirs. Ce sont des ordres de grandeur, pas des simulations relativistes. Rayons des orbites planétaires, du Soleil et de la Terre : constantes usuelles.</p>
+      </section>
+      <section class="stack">
+        <h2>Toutes les sources</h2>
+        <ul class="src" id="toutesSources" style="font-size:15px"></ul>
+      </section>
+    </div>
+  </main>
+
+
+  <footer class="foot">
+    <div class="foot-in">
+      <span>Hors-Champ · projet de Raphaël · 2026-2027</span>
+      <span>Étiquettes : <b>s</b> sourcé · <b>c</b> calcul · <b>m</b> de mémoire — <a href="#methode">méthode</a></span>
+    </div>
+  </footer>
+
+  <!-- ===================== 1. DONNÉES (tout le contenu du site) ===================== -->
+  <script>
+/* =====================================================================
+   Hors-Champ — DONNÉES
+   Tout le contenu du site est ici. Pour ajouter un astre :
+   1. ajoute ses sources dans S,
+   2. ajoute sa fiche dans FICHES (copie une fiche existante comme modèle),
+   3. ajoute son repère dans MARKS (distance en années-lumière).
+   Étiquettes dans les textes : s = sourcé, c = calcul, m = de mémoire.
+   ===================================================================== */
+
+/* ================= Sources ================= */
+const S = {
+  ton618:{t:"TON 618 – Wikipedia",u:"https://en.wikipedia.org/wiki/TON_618"},
+  sgra:{t:"Sagittarius A* – Wikipedia",u:"https://en.wikipedia.org/wiki/Sagittarius_A*"},
+  m87:{t:"Messier 87 – Wikipedia",u:"https://en.wikipedia.org/wiki/Messier_87"},
+  mw:{t:"Milky Way – Wikipedia (vitesse et distance du Soleil)",u:"https://en.wikipedia.org/wiki/Milky_Way"},
+  voa:{t:"Scientists Release Picture of Milky Way Black Hole – VOA (2022)",u:"https://learningenglish.voanews.com/amp/scientists-release-picture-of-milky-way-black-hole/6568715.html"},
+  nasa:{t:"NASA Imagine the Universe – un Soleil remplacé par un trou noir",u:"https://imagine.gsfc.nasa.gov/educators/blackholes/imagine/page26.html"},
+  thorne:{t:"The Science of Interstellar – extrait (Space.com)",u:"https://www.space.com/28077-science-of-interstellar-book-excerpt.html"},
+  info:{t:"The Science of Interstellar Explained – infographie Space.com",u:"https://cur.at/jdpe54t?m=web"},
+  luminet:{t:"J.-P. Luminet, The Warped Science of Interstellar (arXiv)",u:"https://arxiv.org/pdf/1503.08305"},
+  ns:{t:"Neutron star – Wikipedia",u:"https://en.wikipedia.org/wiki/Neutron_star"},
+  crab:{t:"Crab Pulsar – Wikipedia",u:"https://en.wikipedia.org/wiki/Crab_Pulsar"},
+  myth:{t:"Nidavellir – Mythopedia",u:"https://mythopedia.com/topics/nidavellir/"},
+  leic:{t:"Forging Stormbreaker – Physics Special Topics, Univ. Leicester",u:"https://journals.le.ac.uk/index.php/pst/article/view/2919"},
+  k16:{t:"Kepler-16b – Smithsonian (2011)",u:"https://smithsonianscience.org/2011/09/from-star-wars-to-science-fact-tatooine-like-planet-discovered/"},
+  k16w:{t:"Kepler-16 – Wikipedia",u:"https://en.wikipedia.org/wiki/Kepler-16"},
+  ht:{t:"Hulse–Taylor pulsar – Wikipedia",u:"https://en.wikipedia.org/wiki/Hulse%E2%80%93Taylor_pulsar"},
+  gw:{t:"Abbott et al. 2017, Multi-messenger Observations of a Binary Neutron Star Merger",u:"https://www.iac.es/es/ciencia-y-tecnologia/publicaciones/multi-messenger-observations-binary-neutron-star-merger"},
+  obspm:{t:"GW170817 – Dictionnaire d'astronomie, Observatoire de Paris",u:"https://dictionary.obspm.fr/letters2/gw/"},
+  sn87:{t:"SN 1987A – Wikipedia",u:"https://en.wikipedia.org/wiki/SN_1987A"},
+  earthsky:{t:"Safe distance from a supernova – EarthSky",u:"https://earthsky.org/astronomy-essentials/safe-distance-from-a-supernova-earth/"},
+  dog:{t:"Star Trek: Picard – What Happened to Romulus? (Den of Geek)",u:"https://www.denofgeek.com/tv/star-trek-picard-what-happened-to-romulus/"},
+  kard:{t:"Kardashev scale – Wikipedia",u:"https://www.chise.org/ipns/en.wikipedia-on-ipfs.org/wiki/Kardashev_scale"},
+  marsfact:{t:"Mars Fact Sheet – NASA",u:"https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"},
+  marsdust:{t:"The Fact and Fiction of Martian Dust Storms – NASA",u:"https://www.nasa.gov/content/the-fact-and-fiction-of-martian-dust-storms"},
+  marsspace:{t:"'The Martian' Dust Storm Would Actually Be a Breeze – Space.com",u:"https://www.space.com/30663-the-martian-dust-storms-a-breeze.html"},
+  betel:{t:"Betelgeuse – Wikipedia",u:"https://en.wikipedia.org/wiki/Betelgeuse"},
+  mt:{t:"Morris-Thorne wormhole – arXiv 1407.3588",u:"https://ar5iv.labs.arxiv.org/html/1407.3588"},
+  ford:{t:"Ford & Roman, QFT constrains traversable wormholes (arXiv)",u:"https://arxiv.org/pdf/gr-qc/9510071"}
+};
+
+/* ================= Données du comparateur (à utiliser par Raphaël) ================= */
+const TROUS_NOIRS = [
+  {nom:"Sagittarius A*", masse:4.297e6, source:"sgra"},
+  {nom:"Gargantua (fiction)", masse:1e8, source:"thorne"},
+  {nom:"M87*", masse:6.5e9, source:"m87"},
+  {nom:"TON 618 (estimation basse)", masse:4.07e10, source:"ton618"},
+  {nom:"TON 618 (estimation haute)", masse:6.6e10, source:"ton618"}
+];
+
+/* ================= Objets de référence pour l'échelle (rayons en km) ================= */
+const UA = 1.496e8;
+const R = {
+  sun:{n:"Soleil",r:696000,k:"star"},
+  earth:{n:"Terre",r:6371,k:"planet"},
+  oMercure:{n:"orbite de Mercure",r:5.79e7,k:"orbit"},
+  oVenus:{n:"orbite de Vénus",r:1.082e8,k:"orbit"},
+  oTerre:{n:"orbite de la Terre",r:UA,k:"orbit"},
+  oMars:{n:"orbite de Mars",r:2.279e8,k:"orbit"},
+  oJupiter:{n:"orbite de Jupiter",r:7.785e8,k:"orbit"},
+  oNeptune:{n:"orbite de Neptune",r:4.495e9,k:"orbit"},
+  lune:{n:"distance Terre-Lune",r:384400,k:"orbit"}
+};
+
+/* ================= Repères de la règle ================= */
+const MARKS = [
+  {n:"Kepler-16b",d:245,f:"tatooine",row:1},
+  {n:"Bételgeuse",d:548,f:"supernova",row:3,lx:30},
+  {n:"Pulsar du Crabe",d:6200,f:"nidavellir",row:1},
+  {n:"Hulse-Taylor",d:21000,f:"doubles",row:3,lx:-64},
+  {n:"Sgr A*",d:27000,f:"ton618",row:0},
+  {n:"SN 1987A",d:168000,f:"supernova",row:2},
+  {n:"M87*",d:5.35e7,f:"ton618",row:1},
+  {n:"GW170817",d:1.3e8,f:"doubles",row:3},
+  {n:"TON 618",d:1.08e10,f:"ton618",row:0},
+  {n:"Gargantua",d:1e10,f:"gargantua",row:2,fic:true,lx:-60}
+];
+
+/* ================= Fiches ================= */
+/* tags : s = sourcé, c = calcul, m = de mémoire */
+const FICHES = [
+ {id:"gargantua",tab:"Gargantua",fic:true,type:"Trou noir supermassif · fiction",title:"Gargantua",
+  facts:[["100 millions M☉","masse retenue par Kip Thorne"],["≈ 1 milliard km","circonférence de l'horizon, comme l'orbite terrestre"],["≈ 10 milliards al","distance indiquée pour le film"]],
+  key:"Gargantua pèse environ 25 fois Sgr A*, mais 400 à 660 fois moins que TON 618.",
+  scale:{items:[R.sun,R.oMercure,R.oTerre,R.oMars,R.oJupiter,{n:"horizon de Gargantua",r:1.6e8,k:"bh"},{n:"horizon de Sgr A*",r:1.27e7,k:"bhghost"}],view:3.2e8,
+    note:"Horizon de Gargantua : rayon ≈ 1,6·10⁸ km, déduit de la circonférence d'environ 1 milliard de km donnée par Thorne (trou noir en rotation rapide). Son bord passe juste au-delà de l'orbite terrestre."},
+  attr:{head:["","Soleil","Gargantua"],rows:[
+    ["Masse","1 M☉","10⁸ M☉ <span class='tag'>s</span>"],
+    ["Attraction à 1 UA (g = GM/d²)","0,006 m/s²","≈ 6·10⁵ m/s², soit 60 000 g <span class='tag'>c</span>"],
+    ["Disque d'accrétion","aucun","gaz à la température de la surface du Soleil, qui éclaire les planètes du film <span class='tag'>s</span>"]]},
+  scen:[
+    {where:"À la place du Soleil",verdict:"La Terre disparaît.",items:["L'horizon (rayon ≈ 1,07 UA) dépasse l'orbite terrestre : la Terre est déjà à l'intérieur. <span class='tag'>c</span>","Sans rotation, l'horizon ferait même ~2 UA : la Terre se retrouverait encore plus profondément à l'intérieur. <span class='tag'>c</span>","Plus de Soleil, donc plus de lumière : ce qui reste au-delà de l'horizon gèle. <span class='tag'>s</span>","Pour rester en orbite, Jupiter devrait aller √10⁸ = 10 000 fois plus vite. Avec sa vitesse actuelle, elle tombe vers le trou noir. <span class='tag'>c</span>"]},
+    {where:"À la place de Sgr A*",verdict:"Pour nous, presque rien ne change.",items:["La masse contenue à l'intérieur de l'orbite du Soleil autour du centre galactique est d'environ 9,3·10¹⁰ M☉ (calcul : v = 220 km/s, d = 27 000 al, M = v²d/G). <span class='tag'>c</span>","Gargantua n'y ajouterait que 0,1 % : l'orbite du Soleil dans la galaxie resterait la même. <span class='tag'>c</span>"]}],
+  prose:["Thorne a déduit cette masse des forces de marée subies par la planète de Miller : il fallait au moins 100 millions de masses solaires. Il juge même 200 millions plus réaliste, mais a arrondi pour garder des chiffres simples.","Gargantua tourne presque à la vitesse de rotation maximale autorisée. C'est ce qui permet une orbite stable tout près de l'horizon, et donc la planète de Miller."],
+  cine:{film:"Interstellar (2014)",v:"vrai",vl:"Physiquement calculé",txt:"Le disque déformé, qui passe au-dessus et en dessous de l'ombre, vient d'un vrai calcul de déviation de la lumière. Le scénario pousse les paramètres à la limite (rotation quasi maximale) pour rendre la planète de Miller possible."},
+  src:["thorne","info","luminet","mw"]},
+
+ {id:"ton618",tab:"TON 618 vs Sgr A*",type:"Quasar · trou noir ultramassif · réel",title:"TON 618 face à Sagittarius A*",
+  facts:[["40,7 à 66 Md M☉","masse de TON 618 selon la méthode"],["4,297 M M☉","masse de Sgr A*, centre de la Voie lactée"],["9 500 à 15 000 ×","rapport des masses (calcul)"]],
+  key:"Plus un trou noir est massif, moins ses forces de marée sont violentes à l'horizon : on traverserait celui de TON 618 sans rien sentir.",
+  scale:{items:[R.sun,R.oTerre,R.oNeptune,{n:"horizon de Sgr A*",r:1.27e7,k:"bhghost"},{n:"horizon de M87*",r:1.92e10,k:"bhghost"},{n:"horizon de TON 618 (40,7 Md M☉)",r:1.2e11,k:"bhghost"},{n:"horizon de TON 618 (66 Md M☉)",r:1.95e11,k:"bh"}],view:2.6e11,
+    note:"Rayons de Schwarzschild calculés avec r_s = 2GM/c² (≈ 2,95 km par masse solaire). Zoome jusqu'à l'orbite de la Terre pour voir Sgr A*, qui tient dans l'orbite de Mercure."},
+  attr:{head:["","Sgr A*","TON 618"],rows:[
+    ["Distance","~27 000 al <span class='tag'>s</span>","~10,8 milliards al (temps de trajet de la lumière) <span class='tag'>s</span>"],
+    ["Attraction à 1 UA","≈ 2,5·10⁴ m/s², 2 600 g <span class='tag'>c</span>","≈ 4·10⁸ m/s² <span class='tag'>c</span>"],
+    ["Disque d'accrétion","très peu actif : un « géant tranquille » <span class='tag'>s</span>","quasar en pleine activité : ≈ 4·10⁴⁰ W, environ 140 000 milliards de Soleils <span class='tag'>s</span>"],
+    ["« Densité » sous l'horizon","~10⁶ kg/m³ <span class='tag'>c</span>","~4·10⁻³ kg/m³, 300 × moins que l'air <span class='tag'>c</span>"],
+    ["Étirement de marée à l'horizon (corps de 2 m)","~10⁻³ m/s² <span class='tag'>c</span>","~10⁻¹² m/s² <span class='tag'>c</span>"]]},
+  scen:[
+    {where:"Sgr A* à la place du Soleil",verdict:"La Terre tombe et se fait déchirer en moins d'une heure.",items:["L'attraction à 1 UA est multipliée par 4,3 millions. Pour rester en orbite, il faudrait ~62 000 km/s ; la Terre n'a que 30 km/s. <span class='tag'>c</span>","Elle chute presque en ligne droite. Durée d'une chute libre depuis 1 UA : ≈ 45 min. <span class='tag'>c</span>","Vers 0,6 UA, l'étirement de marée dépasse la gravité propre de la Terre : elle est disloquée bien avant l'horizon (0,085 UA). <span class='tag'>c</span>","Dès la première seconde, les marées valent ~2 millions de fois celles de la Lune. <span class='tag'>c</span>"]},
+    {where:"TON 618 à la place du Soleil",verdict:"Le système solaire entier est sous l'horizon.",items:["Horizon de 800 à 1 300 UA, alors que Neptune orbite à 30 UA. <span class='tag'>c</span>","La Terre, à 1 UA, se retrouverait instantanément à l'intérieur : aucun signal d'elle ne pourrait plus en sortir. <span class='tag'>c</span>"]},
+    {where:"M87* à la place du Soleil",verdict:"Lui aussi avale tout le système solaire.",items:["6,5 milliards de M☉ : horizon d'environ 128 UA, plus de 4 fois l'orbite de Neptune. <span class='tag'>c</span>"]},
+    {where:"TON 618 à la place de Sgr A*",verdict:"L'orbite du Soleil dans la galaxie serait bouleversée.",items:["TON 618 ajouterait 44 à 71 % de la masse qui retient le Soleil (~9,3·10¹⁰ M☉). <span class='tag'>c</span>","La vitesse d'orbite nécessaire passerait de 220 à 264-288 km/s : avec sa vitesse actuelle, le Soleil plongerait vers le centre sur une orbite allongée (approximation d'une masse sphérique). <span class='tag'>c</span>","Énergie lumineuse reçue : ≈ 0,05 W/m², soit 1/28 000 du Soleil. La poussière du plan galactique en absorberait une grande partie dans le visible. <span class='tag'>c</span><span class='tag'>m</span>"]}],
+  prose:["Le rayon de Schwarzschild r_s = 2GM/c² est proportionnel à la masse. Le volume sous l'horizon varie donc comme M³, la densité moyenne comme 1/M², et les marées à l'horizon aussi comme 1/M².","La densité sous l'horizon est une grandeur formelle, utile pour comparer : en relativité générale, le volume intérieur n'est pas bien défini.","Les deux masses de TON 618 viennent de deux raies spectrales différentes (Hβ, puis C IV en 2019). Celle de Sgr A* est l'une des mieux mesurées, grâce aux orbites d'étoiles comme S2 (Nobel 2020)."],
+  cine:{film:"Aucun film",v:"none",vl:"Pas de référence",txt:"TON 618 n'apparaît dans aucun grand film identifié. Il sert de repère réel pour mesurer Gargantua."},
+  src:["ton618","sgra","m87","voa","mw"]},
+
+ {id:"nidavellir",tab:"Étoile à neutrons",fic:true,type:"Étoile à neutrons · fiction et réel",title:"La forge de Nidavellir",
+  facts:[["~1,4 M☉","masse typique"],["~10 km","rayon typique"],["~30 tours/s","rotation du pulsar du Crabe"]],
+  key:"Une cuillère à café de matière d'étoile à neutrons pèserait environ 2 à 3 milliards de tonnes.",
+  scale:{items:[{n:"étoile à neutrons",r:10,k:"ns"},{n:"Paris (disque de même surface)",r:5.8,k:"orbit"},R.earth,R.lune,R.sun],view:40,
+    note:"Paris intra-muros représenté par un disque de même surface (≈ 105 km², de mémoire). Zoome pour voir la Terre puis le Soleil."},
+  attr:{head:["","Terre","Étoile à neutrons"],rows:[
+    ["Masse","1 masse terrestre","~1,4 M☉, soit ~470 000 Terres <span class='tag'>s</span><span class='tag'>c</span>"],
+    ["Gravité en surface","9,8 m/s²","≈ 1,9·10¹² m/s², 190 milliards de fois plus <span class='tag'>c</span>"],
+    ["Densité","5 500 kg/m³","3,7 à 5,9·10¹⁷ kg/m³, comme un noyau atomique <span class='tag'>s</span>"],
+    ["Disque d'accrétion","aucun","seulement en système double : le gaz arraché au compagnon chauffe et émet des rayons X <span class='tag'>s</span>"]]},
+  scen:[
+    {where:"À la place du Soleil",verdict:"Nuit glaciale et année de 212 jours.",items:["Pas de fusion nucléaire : l'étoile ne fait que refroidir. La Terre gèle. <span class='tag'>s</span>","Attraction × 1,4. La Terre garde 30 km/s alors qu'il en faudrait 35 : son orbite devient une ellipse entre 0,56 et 1 UA, parcourue en ~212 jours. <span class='tag'>c</span>"]},
+    {where:"À la place de Sgr A*",verdict:"Aucun effet mesurable pour nous.",items:["1,4 M☉ contre 4,3 millions : la galaxie ne sentirait pas la différence sur l'orbite du Soleil. <span class='tag'>c</span>"]}],
+  prose:["Une étoile à neutrons est le cœur effondré d'une étoile massive après une supernova. La matière y est comprimée jusqu'à la densité d'un noyau atomique.","Repère réel : le pulsar du Crabe, à ~6 200 al, reste de la supernova observée en 1054. Il fait environ 30 tours par seconde.","Une équipe de l'université de Leicester a estimé qu'il faudrait 8,4·10²⁵ J pour forger la hache Stormbreaker, et que Thor devrait encaisser 8,8·10²⁴ J."],
+  cine:{film:"Avengers: Infinity War (2018)",v:"faux",vl:"Physiquement faux",txt:"Les nains forgent grâce à une étoile à neutrons entourée d'anneaux, éteinte après Thanos puis « rallumée ». Une étoile à neutrons ne produit pas d'énergie par fusion : il n'y a rien à rallumer."},
+  src:["ns","crab","myth","leic"]},
+
+ {id:"tatooine",tab:"Tatooine / Kepler-16b",fic:true,type:"Système double · fiction et réel",title:"Tatooine et Kepler-16b",
+  facts:[["~245 al","distance de Kepler-16"],["0,70 + 0,21 M☉","masses des deux étoiles"],["229 jours","année de Kepler-16b"]],
+  key:"Kepler-16b est la première planète confirmée qui tourne autour de deux étoiles.",
+  scale:{items:[R.sun,{n:"Kepler-16A",r:451600,k:"star"},{n:"Kepler-16B",r:157400,k:"star2"},R.oMercure,{n:"orbite de Kepler-16b",r:1.054e8,k:"orbitHi"},R.oTerre],view:1.7e8,
+    note:"Rayons des étoiles : 0,649 et 0,226 rayon solaire. Kepler-16b orbite à 0,705 UA, presque comme Vénus. Zoome au minimum pour comparer les deux soleils au nôtre."},
+  attr:{head:["","Soleil","Kepler-16 (A + B)"],rows:[
+    ["Masse","1 M☉","0,909 M☉ au total <span class='tag'>s</span><span class='tag'>c</span>"],
+    ["Attraction à 1 UA","0,006 m/s²","0,9 × celle du Soleil <span class='tag'>c</span>"],
+    ["Planète","Terre, rocheuse","Kepler-16b : 0,33 masse de Jupiter, gazeuse et froide <span class='tag'>s</span>"]]},
+  scen:[
+    {where:"À la place du Soleil",verdict:"Deux soleils, une année plus longue, une Terre plus froide.",items:["Attraction × 0,91 : avec ses 30 km/s, la Terre va un peu trop vite et s'éloigne sur une ellipse entre 1 et 1,22 UA. Année ≈ 1,23 an. <span class='tag'>c</span>","Deux étoiles plus petites que le Soleil (K et naine M) : moins de lumière reçue. <span class='tag'>s</span><span class='tag'>m</span>","Double coucher de soleil garanti."]}],
+  prose:["Kepler-16b a été annoncée en septembre 2011 grâce au télescope Kepler. Ses deux soleils, une étoile orange et une naine rouge, tournent l'un autour de l'autre en 41 jours.","La planète a à peu près la taille et la masse de Saturne. Le double coucher de soleil de Luke existe donc bien, sur une planète très différente de Tatooine."],
+  cine:{film:"Star Wars (1977)",v:"exag",vl:"En partie vrai",txt:"Une planète avec deux soleils : confirmé depuis 2011. Un désert habitable autour de ces deux soleils : pas pour Kepler-16b, qui est une planète gazeuse glacée."},
+  src:["k16w","k16"]},
+
+ {id:"doubles",tab:"Étoiles à neutrons doubles",type:"Système binaire d'étoiles à neutrons · réel",title:"Étoiles à neutrons doubles",
+  facts:[["7,75 h","période orbitale de Hulse-Taylor"],["0,997 ± 0,002","rapport mesuré / prédit par Einstein"],["~300 millions d'années","avant la fusion des deux étoiles"]],
+  key:"Après 130 millions d'années de trajet, ondes gravitationnelles et lumière sont arrivées à 1,7 s d'écart : elles vont à la même vitesse.",
+  scale:{items:[R.lune,R.sun,{n:"Hulse-Taylor : distance minimale",r:746600,k:"orbit"},{n:"Hulse-Taylor : demi-grand axe",r:1950100,k:"orbitHi"},{n:"Hulse-Taylor : distance maximale",r:3153600,k:"orbit"},{n:"une étoile à neutrons (10 km)",r:10,k:"ns"}],view:3.6e6,
+    note:"Les deux étoiles à neutrons, 20 km de diamètre chacune, tourneraient l'une autour de l'autre dans un volume comparable au Soleil. Zoome au maximum pour voir l'une d'elles."},
+  attr:{head:["","Pulsar","Compagnon"],rows:[
+    ["Masse","1,441 M☉ <span class='tag'>s</span>","1,387 M☉ <span class='tag'>s</span>"],
+    ["Séparation","746 600 à 3 153 600 km <span class='tag'>s</span>",""],
+    ["Perte d'énergie","ondes gravitationnelles : l'orbite raccourcit de ~76 µs par an <span class='tag'>s</span>",""]]},
+  scen:[
+    {where:"À la place du Soleil",verdict:"Plus de lumière et une année de 103 jours.",items:["Aucune fusion : la Terre gèle. <span class='tag'>s</span>","Masse totale 2,83 M☉ : la Terre, trop lente, passe sur une ellipse entre 0,21 et 1 UA, parcourue en ~103 jours. <span class='tag'>c</span>","Dans ~300 millions d'années, les deux étoiles fusionnent en kilonova, comme GW170817. <span class='tag'>s</span>"]}],
+  prose:["Le pulsar de Hulse-Taylor (PSR B1913+16), découvert en 1974 à Arecibo, est le premier pulsar binaire connu, à ~21 000 al. Son orbite rétrécit parce que le système émet des ondes gravitationnelles, au rythme exact prédit par Einstein. Nobel 1993.","Le 17 août 2017, LIGO et Virgo ont capté la fusion de deux étoiles à neutrons à ~40 Mpc (~130 millions d'al). Un sursaut gamma a suivi 1,7 s plus tard, et l'explosion a fabriqué des éléments lourds comme l'or et le platine.","Calcul : 1,7 s / 4·10¹⁵ s ≈ 4·10⁻¹⁶. À cette précision près, les ondes gravitationnelles se propagent à la vitesse de la lumière."],
+  cine:{film:"Aucun film",v:"none",vl:"Pas de référence",txt:"Pas de grand film identifié sur ce sujet. La fiche reste purement scientifique."},
+  src:["ht","gw","obspm"]},
+
+ {id:"supernova",tab:"Supernova",fic:true,type:"Explosion d'étoile · fiction et réel",title:"Supernova",
+  facts:[["~168 000 al","distance de SN 1987A"],["~548 al","distance de Bételgeuse"],["~764 R☉","rayon de Bételgeuse"]],
+  key:"Mise à la place du Soleil, Bételgeuse engloutirait Mercure, Vénus, la Terre et Mars.",
+  scale:{items:[R.sun,R.oMercure,R.oTerre,R.oMars,{n:"Bételgeuse",r:5.32e8,k:"star"},R.oJupiter],view:9e8,
+    note:"Rayon de Bételgeuse : ~764 rayons solaires, soit ~3,5 UA. Les estimations vont de 640 à 764 R☉."},
+  attr:{head:["","Soleil","Bételgeuse"],rows:[
+    ["Masse","1 M☉","~14 M☉ (estimations de ~10 à ~20) <span class='tag'>s</span>"],
+    ["Rayon","1 R☉","~764 R☉ <span class='tag'>s</span>"],
+    ["Attraction à 1 UA","0,006 m/s²","14 × plus <span class='tag'>c</span>"]]},
+  scen:[
+    {where:"Si Bételgeuse explosait demain",verdict:"Un spectacle, pas un danger.",items:["Elle est à ~430 à 548 al selon les études, bien au-delà de la zone dangereuse (~30 al, au pire ~160 al). <span class='tag'>s</span>","Elle deviendrait l'un des objets les plus brillants du ciel pendant des semaines. <span class='tag'>m</span>"]},
+    {where:"Bételgeuse à la place du Soleil",verdict:"Les quatre planètes rocheuses sont dans l'étoile.",items:["Surface à ~3,5 UA, au-delà de l'orbite de Mars. <span class='tag'>s</span>","Jupiter, attirée 14 fois plus fort, part sur une ellipse qui plonge jusqu'à ~0,19 UA : elle aussi traverse l'étoile. <span class='tag'>c</span>"]}],
+  prose:["Une supernova est l'explosion d'une étoile en fin de vie. Pour une étoile massive, le cœur s'effondre en étoile à neutrons ou en trou noir, ce qui relie cette fiche aux deux précédentes.","SN 1987A a été vue le 23 février 1987 dans le Grand Nuage de Magellan, une petite galaxie satellite de la Voie lactée. Elle a atteint la magnitude 3 environ, assez pour être vue sans instrument. L'étoile d'origine était une supergéante bleue, Sanduleak −69 202."],
+  cine:{film:"Star Trek (2009)",v:"exag",vl:"En partie vrai",txt:"Spock tente d'arrêter une supernova qui menace Romulus en y injectant de la « matière rouge », mais arrive trop tard. Une supernova proche peut bien ravager une planète : on estime les dégâts graves en dessous d'environ 30 al, et certains effets jusqu'à ~160 al. Arrêter l'explosion avec une substance, en revanche, relève de la pure fiction."},
+  src:["sn87","betel","earthsky","dog"]},
+
+ {id:"mars",tab:"Mars",fic:true,type:"Planète · fiction et réel",title:"Mars et la tempête de Seul sur Mars",
+  facts:[["0,107 masse terrestre","masse de Mars"],["3 396 km","rayon équatorial"],["3,73 m/s²","gravité en surface"]],
+  key:"La tempête qui renverse la fusée dans Seul sur Mars serait, sur Mars, à peine une brise : l'air y est environ 100 fois moins dense que sur Terre.",
+  scale:{items:[{n:"Lune",r:1737,k:"moon"},{n:"Mars",r:3396,k:"mars"},R.earth],view:8000,
+    note:"Mars a un peu plus de la moitié du rayon de la Terre. Rayon de la Lune : 1 737 km (de mémoire)."},
+  attrTitre:"Gravité et atmosphère",
+  attr:{head:["","Terre","Mars"],rows:[
+    ["Gravité en surface","9,81 m/s²","3,73 m/s² <span class='tag'>s</span>"],
+    ["Masse","1 masse terrestre","0,107 <span class='tag'>s</span>"],
+    ["Densité de l'air au sol","~1,2 kg/m³ <span class='tag'>m</span>","~0,016 kg/m³ <span class='tag'>s</span>"],
+    ["Vents des plus fortes tempêtes","plus de 250 km/h dans certains ouragans <span class='tag'>m</span>","~100 km/h (60 mph) <span class='tag'>s</span>"],
+    ["Pression du vent à 100 km/h (½ρv²)","~460 Pa <span class='tag'>c</span>","~6 Pa <span class='tag'>c</span>"]]},
+  scen:[
+    {where:"La tempête du film",verdict:"Ressentie comme un vent de 12 km/h sur Terre.",items:["La poussée du vent vaut ½ρv². Avec 100 km/h et 0,016 kg/m³, on trouve ~6 Pa. <span class='tag'>c</span>","Sur Terre, la même poussée correspond à un vent d'environ 12 km/h : une petite brise. <span class='tag'>c</span>","NASA : même les plus grosses tempêtes ne pourraient probablement pas renverser du gros matériel. Le vrai problème, c'est la poussière qui couvre les panneaux solaires. <span class='tag'>s</span>"]},
+    {where:"Toi sur Mars",verdict:"Ton poids est divisé par 2,6.",items:["P = mg : avec 60 kg, ton poids passe de ~589 N sur Terre à ~224 N sur Mars (×0,38). Ta masse ne change pas. <span class='tag'>c</span>"]}],
+  prose:["Mars tourne autour du Soleil à environ 228 millions de km en moyenne, soit 1,52 UA. Sa pression au sol, autour de 6 hPa, varie de 4 à 8,7 hPa selon les saisons.","Distance depuis la Terre : quelques minutes-lumière seulement. Mars est donc bien trop proche pour apparaître sur la règle des distances, qui commence à 100 années-lumière."],
+  cine:{film:"Seul sur Mars (2015)",v:"faux",vl:"Physiquement faux",txt:"La tempête qui renverse la fusée et blesse Mark Watney est impossible avec une atmosphère aussi peu dense. Le reste du film, notamment la culture de pommes de terre et la question de la poussière, est bien plus réaliste (de mémoire pour ce dernier point)."},
+  src:["marsfact","marsdust","marsspace"]},
+
+ {id:"kardashev",tab:"Échelle de Kardashev",fic:true,type:"Échelle d'énergie · spéculatif",title:"L'échelle de Kardashev",
+  facts:[["1964","proposée par l'astronome Nikolaï Kardashev"],["≈ 0,73","niveau actuel de l'humanité (calcul de Sagan, 2018)"],["× 1 000","TON 618 face à une civilisation de type III"]],
+  key:"Même une civilisation qui maîtriserait toute l'énergie de sa galaxie resterait 1 000 fois en dessous de la puissance du quasar TON 618.",
+  specul:"Les puissances (Terre, Soleil, Voie lactée, TON 618) sont mesurées. Les civilisations, elles, sont imaginées : aucune n'a été détectée à ce jour.",
+  puissances:[
+    ["Humanité (consommation 2018)",1.84e13,"s","reel"],
+    ["Type I (seuil de Sagan)",1e16,"s","seuil"],
+    ["Énergie solaire reçue par la Terre",1.74e17,"s","reel"],
+    ["Type II = luminosité du Soleil",4e26,"s","seuil"],
+    ["Type III = luminosité de la Voie lactée",4e37,"s","seuil"],
+    ["Quasar TON 618",4e40,"s","extreme"]],
+  attrTitre:"Niveau sur l'échelle",
+  attr:{head:["","Puissance","Niveau K = (log₁₀ P − 6) / 10"],rows:[
+    ["Humanité, 2018","1,84·10¹³ W <span class='tag'>s</span>","≈ 0,73 <span class='tag'>c</span>"],
+    ["Type I","10¹⁶ W","1"],
+    ["Type II","~4·10²⁶ W <span class='tag'>s</span>","≈ 2,1 <span class='tag'>c</span>"],
+    ["Type III","~4·10³⁷ W <span class='tag'>s</span>","≈ 3,2 <span class='tag'>c</span>"],
+    ["TON 618 (pas une civilisation : un repère)","~4·10⁴⁰ W <span class='tag'>s</span>","≈ 3,5 <span class='tag'>c</span>"]]},
+  scen:[
+    {where:"Si l'humanité atteignait le type I",verdict:"Il faudrait consommer 540 fois plus d'énergie qu'aujourd'hui.",items:["10¹⁶ W ÷ 1,84·10¹³ W ≈ 540 (seuil de Sagan). <span class='tag'>c</span>","Avec la définition moderne (capter toute l'énergie solaire reçue par la Terre, 1,74·10¹⁷ W), c'est ~9 500 fois plus. <span class='tag'>c</span>","Chaque dixième de K correspond à une puissance multipliée par 10 : passer de 0,73 à 1, c'est ×10²·⁷, soit ~500. <span class='tag'>c</span>"]},
+    {where:"Une civilisation de type II autour du Soleil",verdict:"Elle capterait 20 000 milliards de fois notre consommation.",items:["4·10²⁶ W ÷ 1,84·10¹³ W ≈ 2·10¹³. <span class='tag'>c</span>","Idée classique pour y arriver : une sphère ou un essaim de capteurs autour de l'étoile, la « sphère de Dyson ». <span class='tag'>m</span>","La forge de Nidavellir, un anneau construit autour d'une étoile pour exploiter son énergie, est une version de cinéma de cette idée."]},
+    {where:"Face à TON 618",verdict:"Le quasar dépasse l'échelle entière.",items:["4·10⁴⁰ W ÷ 4·10³⁷ W = 1 000 : TON 618 rayonne autant que mille galaxies comme la nôtre, à lui seul. <span class='tag'>c</span>","Sur l'échelle de Sagan, il serait au niveau ≈ 3,5. Ce n'est pas une civilisation : c'est du gaz qui tombe dans un trou noir. <span class='tag'>c</span>"]}],
+  prose:["Kardashev classe une civilisation selon la puissance qu'elle exploite. Dans sa définition de 1964, le type I valait environ 4·10¹² W, l'ordre de grandeur de la consommation mondiale de l'époque. Les définitions modernes visent toute l'énergie que la planète reçoit de son étoile.","Carl Sagan a proposé une version continue : K = (log₁₀ P − 6) / 10, avec P en watts. Elle donne 1 pour 10¹⁶ W, 2 pour 10²⁶ W et 3 pour 10³⁶ W. C'est elle qui place l'humanité vers 0,73.","Cette échelle mesure une seule chose, la puissance. Elle ne dit rien de l'intelligence, de la culture ou de la durée de vie d'une civilisation."],
+  cine:{film:"Avengers: Infinity War (2018)",v:"hypo",vl:"Spéculatif",txt:"Nidavellir, un anneau géant autour d'une étoile pour en capter l'énergie, montre une technologie de civilisation de type II. Aucune structure de ce type n'a jamais été observée."},
+  src:["kard","ton618","myth"]},
+
+ {id:"ver",tab:"Trou de ver",fic:true,type:"Objet hypothétique · jamais observé",title:"Trou de ver",
+  facts:[["1935","Einstein et Rosen : premier « pont » dans les équations"],["1988","Morris et Thorne : version traversable"],["0","trou de ver observé"]],
+  key:"Autorisé par les équations, jamais observé, probablement impossible en pratique.",
+  scale:null, attr:null, scen:null,
+  prose:["Les équations de la relativité générale admettent des ponts entre deux régions de l'espace-temps. Le trou de ver de Schwarzschild n'est pas traversable : il se referme avant que quoi que ce soit, même la lumière, puisse le franchir.","Morris et Thorne ont montré qu'un trou de ver traversable est mathématiquement cohérent à une condition : sa gorge doit contenir de la « matière exotique », d'énergie négative, qui viole les conditions d'énergie respectées par toute matière connue.","La théorie quantique des champs encadre très strictement l'énergie négative. Les analyses concluent qu'elle ne permet probablement pas de trou de ver statique et traversable à notre échelle."],
+  cine:{film:"Interstellar (2014)",v:"hypo",vl:"Hypothétique",txt:"Le trou de ver près de Saturne suit la géométrie étudiée par Thorne. Il suppose exactement la matière exotique que personne ne sait produire."},
+  src:["mt","ford"]}
+];
+
+/* =====================================================================
+   MENU : les catégories d'astres et leurs comparaisons
+   [id de la fiche, nom dans le menu, description courte]
+   ===================================================================== */
+const CATEGORIES = [
+  { id: "trous-noirs", nom: "Trous noirs", items: [
+    ["gargantua", "Gargantua", "Interstellar face aux vrais trous noirs"],
+    ["ton618", "TON 618 vs Sgr A*", "Le plus massif connu face au nôtre"] ] },
+  { id: "neutrons", nom: "Étoiles à neutrons", items: [
+    ["nidavellir", "La forge de Nidavellir", "Infinity War face au pulsar du Crabe"],
+    ["doubles", "Étoiles à neutrons doubles", "Hulse-Taylor et la fusion GW170817"] ] },
+  { id: "etoiles", nom: "Étoiles", items: [
+    ["tatooine", "Tatooine / Kepler-16b", "Star Wars face à une vraie planète à deux soleils"],
+    ["supernova", "Supernova", "Bételgeuse à la place du Soleil"] ] },
+  { id: "planetes", nom: "Planètes", items: [
+    ["mars", "Mars", "Seul sur Mars face à la vraie atmosphère martienne"] ] },
+  { id: "hypothetique", nom: "Hypothétique", items: [
+    ["ver", "Trou de ver", "Interstellar face à la relativité générale"],
+    ["kardashev", "Échelle de Kardashev", "Civilisations et énergie, face au quasar TON 618"] ] }
+];
+
+  </script>
+
+  <!-- ===================== 2. OUTILS ET DESSINS ===================== -->
+  <script>
+/* =====================================================================
+   Hors-Champ — OUTILS COMMUNS (chargé sur toutes les pages)
+   ===================================================================== */
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const css = (nom) => getComputedStyle(document.documentElement).getPropertyValue(nom).trim();
+const mouvementReduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Écrit 1,5·10⁸ au lieu de 150000000
+function puissance(n, chiffres = 1) {
+  const e = Math.floor(Math.log10(Math.abs(n)));
+  const m = n / 10 ** e;
+  const exp = String(e).split("").map((d) => (d === "-" ? "⁻" : "⁰¹²³⁴⁵⁶⁷⁸⁹"[d])).join("");
+  return m.toLocaleString("fr-FR", { maximumFractionDigits: chiffres }) + "·10" + exp;
+}
+
+// Affiche une longueur en km, avec l'équivalent en UA quand c'est utile
+function fmtKm(km) {
+  const nf = (x, d) => x.toLocaleString("fr-FR", { maximumFractionDigits: d });
+  if (km < 1000) return nf(km, km < 10 ? 1 : 0) + " km";
+  if (km < 1e6) return nf(Math.round(km / 100) * 100, 0) + " km";
+  const ua = km / UA;
+  return puissance(km) + " km" + (ua >= 0.05 ? " (" + nf(ua, ua < 10 ? 2 : 0) + " UA)" : "");
+}
+
+
+// Fond : nébuleuses colorées + trois couches d'étoiles (toujours le même dessin grâce à la graine)
+function dessinerCiel() {
+  const c = $("#ciel");
+  if (!c) return;
+  const x = c.getContext("2d"), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = innerWidth, H = innerHeight * 1.15;
+  c.width = W * dpr; c.height = H * dpr;
+  x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  let graine = 7;
+  const hasard = () => (graine = (graine * 16807) % 2147483647) / 2147483647;
+  x.fillStyle = "#05060e"; x.fillRect(0, 0, W, H);
+  // grandes nébuleuses
+  [[0.88, 0.1, 0.6, "92,60,170"], [0.08, 0.7, 0.65, "24,96,128"], [0.55, 0.95, 0.5, "150,80,36"], [0.35, 0.25, 0.35, "60,40,120"]]
+    .forEach(([fx, fy, r, rgb]) => {
+      const g = x.createRadialGradient(W * fx, H * fy, 0, W * fx, H * fy, Math.max(W, H) * r);
+      g.addColorStop(0, `rgba(${rgb},.32)`); g.addColorStop(0.45, `rgba(${rgb},.1)`); g.addColorStop(1, `rgba(${rgb},0)`);
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+    });
+  // texture de poussière
+  x.globalCompositeOperation = "lighter";
+  for (let i = 0; i < 260; i++) {
+    const px = hasard() * W, py = hasard() * H, r = 30 + hasard() * 140;
+    const g = x.createRadialGradient(px, py, 0, px, py, r);
+    const teinte = hasard() > 0.5 ? "120,90,200" : "60,140,170";
+    g.addColorStop(0, `rgba(${teinte},${0.012 + hasard() * 0.025})`); g.addColorStop(1, `rgba(${teinte},0)`);
+    x.fillStyle = g; x.fillRect(px - r, py - r, r * 2, r * 2);
+  }
+  // étoiles
+  for (let i = 0; i < Math.round((W * H) / 1400); i++) {
+    x.globalAlpha = 0.2 + hasard() * 0.7;
+    x.fillStyle = hasard() > 0.88 ? "#ffd9a8" : hasard() > 0.8 ? "#bcd0ff" : "#ffffff";
+    x.beginPath(); x.arc(hasard() * W, hasard() * H, hasard() * 1.05 + 0.2, 0, 7); x.fill();
+  }
+  // quelques étoiles brillantes avec aigrettes
+  for (let i = 0; i < 14; i++) {
+    const px = hasard() * W, py = hasard() * H, L = 6 + hasard() * 10;
+    x.globalAlpha = 0.5 + hasard() * 0.4;
+    const g = x.createRadialGradient(px, py, 0, px, py, L * 0.6);
+    g.addColorStop(0, "rgba(255,255,255,.9)"); g.addColorStop(1, "rgba(180,200,255,0)");
+    x.fillStyle = g; x.beginPath(); x.arc(px, py, L * 0.6, 0, 7); x.fill();
+    x.strokeStyle = "rgba(220,230,255,.45)"; x.lineWidth = 0.7;
+    x.beginPath(); x.moveTo(px - L, py); x.lineTo(px + L, py); x.moveTo(px, py - L); x.lineTo(px, py + L); x.stroke();
+  }
+  x.globalAlpha = 1; x.globalCompositeOperation = "source-over";
+}
+// léger effet de profondeur au défilement
+addEventListener("scroll", () => {
+  if (mouvementReduit) return;
+  const c = $("#ciel"); if (c) c.style.transform = `translate3d(0, ${-scrollY * 0.04}px, 0)`;
+}, { passive: true });
+
+// Règle des distances en échelle logarithmique (page d'accueil)
+const LOG_MIN = 2, LOG_MAX = 10.4;
+const positionSurRegle = (d) => 4 + ((Math.log10(d) - LOG_MIN) / (LOG_MAX - LOG_MIN)) * 92;
+
+function dessinerRegle(conteneur) {
+  let h = '<div class="axis"></div>';
+  [[1e2, "100"], [1e3, "1 000"], [1e4, "10 000"], [1e5, "100 000"], [1e6, "1 M"], [1e7, "10 M"], [1e8, "100 M"], [1e9, "1 Md"], [1e10, "10 Md"]]
+    .forEach(([d, l]) => { h += `<div class="tick" style="left:${positionSurRegle(d)}%"><span>${l}</span></div>`; });
+  MARKS.forEach((m) => {
+    const haut = 12 + m.row * 40, tige = 190 - haut - 38;
+    h += `<a class="mk${m.fic ? " fic" : ""}" href="#${m.f}" style="left:${positionSurRegle(m.d)}%;top:${haut}px"
+      aria-label="${esc(m.n)}, environ ${m.d.toLocaleString("fr-FR")} années-lumière">
+      <span class="lbl" style="transform:translateX(${m.lx || 0}px)">${esc(m.n)}</span>
+      <span class="stem" style="height:${tige}px"></span><span class="dot"></span></a>`;
+  });
+  conteneur.innerHTML = h;
+}
+
+dessinerCiel();
+addEventListener("resize", dessinerCiel);
+
+/* =====================================================================
+   Hors-Champ — VUE « À L'ÉCHELLE »
+   Dessine des cercles concentriques à la même échelle (rayons en km)
+   et gère le zoom (curseur + boutons « Cadrer sur », avec animation).
+   ===================================================================== */
+
+function creerEchelle(canvas, curseur, lecture, horsCadre, objets, vueDepart) {
+  const rayons = objets.map((o) => o.r);
+  const etat = {
+    vue: vueDepart,                          // rayon du champ affiché, en km
+    min: Math.min(...rayons) * 1.2,
+    max: Math.max(...rayons) * 1.4,
+    anim: null
+  };
+  curseur.min = Math.log10(etat.min);
+  curseur.max = Math.log10(etat.max);
+  curseur.step = 0.005;
+  curseur.value = Math.log10(etat.vue);
+
+  function dessiner() {
+    const dpr = window.devicePixelRatio || 1, w = canvas.clientWidth, h = canvas.clientHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    const x = canvas.getContext("2d");
+    x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    x.fillStyle = css("--bg"); x.fillRect(0, 0, w, h);
+
+    const cx = w * 0.45, cy = h / 2, Rpx = Math.min(w * 0.4, h * 0.46), k = Rpx / etat.vue;
+    const loin = Math.hypot(Math.max(cx, w - cx), cy);
+    const c = { fg: css("--fg"), muted: css("--muted"), line: css("--line-2"), accent: css("--accent"), cool: css("--cool"), star: css("--star") };
+    const tries = [...objets].sort((a, b) => b.r - a.r);
+    const visibles = [];
+
+    tries.forEach((o) => {
+      const r = o.r * k;
+      if (r > loin * 1.02) return;
+      x.save(); x.beginPath(); x.arc(cx, cy, Math.max(r, 1.2), 0, Math.PI * 2);
+      if (o.k === "orbit" || o.k === "orbitHi") {
+        x.setLineDash([4, 5]); x.lineWidth = o.k === "orbitHi" ? 1.6 : 1;
+        x.strokeStyle = o.k === "orbitHi" ? c.cool : c.line; x.stroke();
+      } else if (o.k === "bh") {
+        x.fillStyle = "#000"; x.fill(); x.lineWidth = 2; x.strokeStyle = c.accent;
+        x.shadowColor = c.accent; x.shadowBlur = mouvementReduit ? 0 : 16; x.stroke();
+      } else if (o.k === "bhghost") {
+        x.setLineDash([2, 4]); x.lineWidth = 1.4; x.strokeStyle = c.accent; x.stroke();
+      } else if (o.k === "star") {
+        const g = x.createRadialGradient(cx, cy, 0, cx, cy, Math.max(r, 1.2));
+        g.addColorStop(0, "#fff4dc"); g.addColorStop(1, c.star); x.fillStyle = g; x.globalAlpha = 0.9; x.fill();
+      } else if (o.k === "star2") { x.fillStyle = "#ff9a6a"; x.globalAlpha = 0.9; x.fill(); }
+      else if (o.k === "ns") { x.fillStyle = c.cool; x.fill(); }
+      else if (o.k === "planet") { x.fillStyle = "#5aa0e6"; x.fill(); }
+      else if (o.k === "mars") { x.fillStyle = "#d9663f"; x.fill(); }
+      else if (o.k === "moon") { x.fillStyle = "#b9b9c4"; x.fill(); }
+      x.restore();
+      visibles.push({ o, r });
+    });
+
+    // Étiquettes : les grands cercles sur leur bord, les petits à gauche avec un trait
+    x.font = "12px " + css("--body"); x.textBaseline = "middle";
+    const petits = visibles.filter((v) => v.r < 14);
+    let yPetit = cy - (petits.length - 1) * 9;
+    const angles = [-0.55, 0.5, -1.0, 0.95, -0.2, 0.2, -1.25];
+    let ia = 0;
+    visibles.forEach(({ o, r }) => {
+      const couleur = o.k === "bh" || o.k === "bhghost" ? c.accent : o.k === "orbitHi" ? c.cool : c.fg;
+      if (r < 14) {
+        const lx = Math.max(cx - Math.max(r, 2) - 70, x.measureText(o.n).width + 8), ly = yPetit; yPetit += 18;
+        x.strokeStyle = c.muted; x.lineWidth = 0.8; x.setLineDash([]);
+        x.beginPath(); x.moveTo(cx - Math.max(r, 1.5), cy); x.lineTo(lx + 6, ly); x.stroke();
+        x.fillStyle = couleur; x.textAlign = "right"; x.fillText(o.n, lx, ly); x.textAlign = "left";
+      } else {
+        let a = angles[ia++ % angles.length];
+        let px = cx + Math.cos(a) * r, py = cy + Math.sin(a) * r;
+        if (px > w - 10 || py < 10 || py > h - 10) {
+          a = Math.PI - 0.35; px = cx + Math.cos(a) * r; py = cy + Math.sin(a) * r;
+          if (px < 4) { px = 8; py = cy - Math.sqrt(Math.max(r * r - (cx - 8) ** 2, 0)); if (py < 10) py = 14 + ia * 14; }
+        }
+        const tw = x.measureText(o.n).width, tx = Math.min(px + 6, w - tw - 10);
+        x.fillStyle = "rgba(10,13,26,.75)"; x.fillRect(tx - 3, py - 9, tw + 6, 18);
+        x.fillStyle = couleur; x.fillText(o.n, tx, py);
+      }
+    });
+
+    const dehors = tries.filter((o) => o.r * k > loin * 1.02).map((o) => o.n);
+    horsCadre.textContent = dehors.length ? "Trop grand pour ce zoom : " + dehors.join(", ") + ". Dézoome pour le voir." : "";
+    lecture.textContent = "Rayon du champ : " + fmtKm(etat.vue);
+  }
+
+  // Zoom animé : on interpole en logarithme pour que le mouvement paraisse régulier
+  function allerA(vueCible) {
+    vueCible = Math.min(Math.max(vueCible, etat.min), etat.max);
+    if (etat.anim) cancelAnimationFrame(etat.anim);
+    if (mouvementReduit) { etat.vue = vueCible; curseur.value = Math.log10(vueCible); dessiner(); return; }
+    const debut = performance.now(), de = Math.log10(etat.vue), a = Math.log10(vueCible), duree = 700;
+    const pas = (t) => {
+      const p = Math.min((t - debut) / duree, 1), lisse = 1 - Math.pow(1 - p, 3);
+      etat.vue = 10 ** (de + (a - de) * lisse);
+      curseur.value = Math.log10(etat.vue);
+      dessiner();
+      if (p < 1) etat.anim = requestAnimationFrame(pas);
+    };
+    etat.anim = requestAnimationFrame(pas);
+  }
+
+  curseur.addEventListener("input", () => { etat.vue = 10 ** parseFloat(curseur.value); dessiner(); });
+  addEventListener("resize", dessiner);
+  dessiner();
+  return { allerA, dessiner };
+}
+
+/* =====================================================================
+   Hors-Champ — PAGE D'UN ASTRE
+   ===================================================================== */
+
+function tableau(t) {
+  return `<div class="tscroll"><table class="cmp"><thead><tr>${t.head.map((x) => `<th>${esc(x)}</th>`).join("")}</tr></thead>
+    <tbody>${t.rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+
+function afficherFiche(id) {
+  const i = Math.max(FICHES.findIndex((f) => f.id === id), 0);
+  const f = FICHES[i];
+  document.title = f.tab + " · Hors-Champ";
+  const cat = CATEGORIES.find((k) => k.items.some((it) => it[0] === f.id));
+  $("#fil").innerHTML = `<a href="#">Accueil</a><span aria-hidden="true">›</span><span>${esc(cat.nom)}</span><span aria-hidden="true">›</span><span aria-current="page">${esc(f.tab)}</span>`;
+
+  // Onglets : les autres comparaisons de la même catégorie
+  $("#onglets").innerHTML = cat.items.map(([id2, nom]) =>
+    `<a class="tab" href="#${id2}"${id2 === f.id ? ' aria-current="page"' : ""}>${esc(nom)}</a>`).join("");
+
+  const pastille = { vrai: "p-vrai", exag: "p-exag", faux: "p-faux", hypo: "p-hypo", none: "p-none" }[f.cine.v];
+  let n = 0; const num = () => String(++n).padStart(2, "0");
+
+  const blocEchelle = f.puissances
+    ? `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>Sur l'échelle des puissances</h4></div>
+        <div class="barres" role="list">${f.puissances.map(([nom, P, tag, genre]) => {
+          const larg = Math.max(4, ((Math.log10(P) - 12) / (41 - 12)) * 100);
+          return `<div class="barre ${genre}" role="listitem"><span class="bn">${esc(nom)}</span>
+            <span class="bt"><span class="bf" style="width:${larg}%"></span></span>
+            <span class="bv">${puissance(P, 2)} W <span class="tag">${tag}</span></span></div>`;
+        }).join("")}</div>
+        <p class="note">Échelle logarithmique : chaque graduation multiplie la puissance par 10. Les barres vont de 10¹² à 10⁴¹ W.</p></section>`
+    : f.scale
+    ? `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>À l'échelle</h4></div>
+        <div class="cv"><canvas id="toile" role="img" aria-label="Comparaison de tailles : ${esc(f.scale.items.map((o) => o.n + " " + fmtKm(o.r)).join(", "))}"></canvas></div>
+        <div class="zoomrow"><label for="zoom">Zoom</label><input id="zoom" type="range"><span class="readout" id="lecture"></span></div>
+        <div class="chips"><span class="note">Cadrer sur :</span>${f.scale.items.map((o, k) => `<button type="button" class="chip" data-cadre="${k}">${esc(o.n)}</button>`).join("")}</div>
+        <p class="note" id="horsCadre"></p>
+        <p class="note">${esc(f.scale.note)}</p></section>`
+    : `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>À l'échelle</h4></div>
+        <div class="empty">${esc(f.vide || "Aucun trou de ver n'a été observé : il n'y a pas de taille mesurée à dessiner.")}</div></section>`;
+
+  const blocAttraction = f.attr ? `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>${esc(f.attrTitre || "Attraction et disque")}</h4></div>${tableau(f.attr)}</section>` : "";
+  const blocScenarios = f.scen ? `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>Et si…</h4></div>
+      <div class="scen">${f.scen.map((s) => `<div class="sc"><div class="where">${esc(s.where)}</div><div class="verdict">${esc(s.verdict)}</div>
+      <ul>${s.items.map((t) => `<li>${t}</li>`).join("")}</ul></div>`).join("")}</div></section>` : "";
+
+  $("#fiche").innerHTML = `
+    <div class="fhead">
+      <div class="ftype${f.fic ? " fic" : ""}">${esc(f.type)}</div>
+      <h1 class="small">${esc(f.title)}</h1>
+      <div class="facts">${f.facts.map(([b, s]) => `<div class="fact"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("")}</div>
+      <div class="keyfact">${esc(f.key)}</div>
+      ${f.specul ? `<div class="specul"><b>Fiche spéculative.</b> ${esc(f.specul)}</div>` : ""}
+    </div>
+    ${blocEchelle}${blocAttraction}${blocScenarios}
+    <section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>Ce qu'il faut savoir</h4></div>
+      <div class="two">
+        <div class="prose">${f.prose.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+        <aside class="fside">
+          <div class="cine"><h3>Au cinéma</h3><div class="film">${esc(f.cine.film)}</div>
+            <span class="pill ${pastille}">${esc(f.cine.vl)}</span><p>${esc(f.cine.txt)}</p></div>
+          ${f.todo ? `<div class="todo-note">${esc(f.todo)}</div>` : ""}
+          <div class="stack" style="gap:8px"><h3>Sources</h3><ul class="src">${f.src.map((k) =>
+            `<li><a href="${S[k].u}" target="_blank" rel="noopener">${esc(S[k].t)}</a></li>`).join("")}</ul></div>
+        </aside>
+      </div>
+    </section>`;
+
+  // Précédent / suivant
+  const prec = FICHES[(i - 1 + FICHES.length) % FICHES.length], suiv = FICHES[(i + 1) % FICHES.length];
+  $("#pager").innerHTML = `<a class="btn" href="#${prec.id}">← ${esc(prec.tab)}</a>
+    <a class="btn primary" href="#${suiv.id}">${esc(suiv.tab)} →</a>`;
+
+  if (f.scale) {
+    const echelle = creerEchelle($("#toile"), $("#zoom"), $("#lecture"), $("#horsCadre"), f.scale.items, f.scale.view);
+    document.querySelectorAll("[data-cadre]").forEach((b) =>
+      b.addEventListener("click", () => echelle.allerA(f.scale.items[+b.dataset.cadre].r * 1.35)));
+  }
+}
+
+
+  </script>
+
+  <!-- ===================== 3. COMPARATEUR (contient « À TOI DE CODER ») ===================== -->
+  <script>
+/* =====================================================================
+   Hors-Champ — COMPARATEUR DE TROUS NOIRS
+   Les données (TROUS_NOIRS) sont dans la partie 1 (DONNÉES).
+   ===================================================================== */
+
+const G = 6.674e-11;      // constante de gravitation (N·m²/kg²)
+const c = 2.998e8;        // vitesse de la lumière (m/s)
+const M_SOLEIL = 1.989e30; // masse du Soleil (kg)
+const UA_M = 1.496e11;    // 1 unité astronomique (m)
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║                    À TOI DE CODER                        ║
+// ╚══════════════════════════════════════════════════════════╝
+// Tant qu'une fonction renvoie undefined, la page affiche « à coder ».
+// Recharge la page après chaque modification : les tests en bas de page
+// te disent si ton résultat est juste.
+
+// 1. Rayon de Schwarzschild, en mètres.
+//    Formule : r_s = 2GM/c²   (M en kilogrammes !)
+function rayonSchwarzschild(masseSolaire) {
+  const M = masseSolaire * M_SOLEIL;  // on convertit en kg : 1 masse solaire = 1,989·10³⁰ kg
+  return (2 * G * M) / (c * c);       // c * c = c² ; résultat en mètres
+}
+
+// 2. Combien de fois le trou noir a est plus massif que b.
+//    a et b sont des objets comme { nom: "Sagittarius A*", masse: 4.297e6 }.
+function rapportMasses(a, b) {
+  return a.masse / b.masse;           // on lit la propriété « masse » de chaque objet
+}
+
+// 3. Attraction ressentie à 1 UA du trou noir, en m/s².
+//    Formule du cours : g = GM/d²   (d = UA_M)
+function attractionA1UA(masseSolaire) {
+  const M = masseSolaire * M_SOLEIL;  // masse en kg
+  const d = UA_M;                     // distance Terre-Soleil en mètres
+  return (G * M) / (d * d);           // champ de gravitation à la distance d
+}
+
+// 4. BONUS : temps pour tomber depuis 1 UA vers le trou noir, en partant à l'arrêt, en secondes.
+//    Formule : t = (π/2) × √( d³ / (2GM) )
+function tempsDeChute(masseSolaire) {
+  const M = masseSolaire * M_SOLEIL;
+  const d = UA_M;
+  return (Math.PI / 2) * Math.sqrt((d ** 3) / (2 * G * M));  // d ** 3 = d³
+}
+
+// ═══════════════════ FIN DE TA PARTIE ═══════════════════════
+
+
+/* ---------- Interface (déjà codée) ---------- */
+const selA = $("#trouA"), selB = $("#trouB");
+const options = TROUS_NOIRS.map((t, i) => `<option value="${i}">${esc(t.nom)}</option>`).join("");
+selA.innerHTML = options; selB.innerHTML = options;
+selA.value = String(TROUS_NOIRS.length - 1); // TON 618 (haute)
+selB.value = "0";                            // Sgr A*
+
+const estCode = (v) => typeof v === "number" && isFinite(v);
+const aCoder = (nom) => `<span>${nom}() n'est pas encore codée.<br>Cherche « À TOI DE CODER » dans le fichier.</span>`;
+
+// Écrit une durée en secondes sous une forme lisible (min, h, jours, ans)
+function dureeLisible(t) {
+  const nf = (x) => x.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
+  if (t < 120) return nf(t) + " s";
+  if (t < 3600) return nf(t / 60) + " min";
+  if (t < 86400 * 2) return nf(t / 3600) + " h";
+  if (t < 86400 * 365 * 2) return nf(t / 86400) + " jours";
+  return nf(t / (86400 * 365.25)) + " ans";
+}
+
+function carte(label, valeur, sous) {
+  return `<div class="res${valeur === null ? " missing" : ""}"><span class="lab">${label}</span>
+    <span class="val">${valeur === null ? sous : valeur}</span>${valeur !== null && sous ? `<span class="lab">${sous}</span>` : ""}</div>`;
+}
+
+function mettreAJour() {
+  const a = TROUS_NOIRS[+selA.value], b = TROUS_NOIRS[+selB.value];
+  const rA = rayonSchwarzschild(a.masse), rB = rayonSchwarzschild(b.masse);
+  const rap = rapportMasses(a, b);
+  const gA = attractionA1UA(a.masse);
+  const tA = tempsDeChute(a.masse);
+
+  const fmtR = (r) => fmtKm(r / 1000);
+  $("#resultats").innerHTML = [
+    carte("Rapport des masses (A / B)", estCode(rap) ? "× " + (rap >= 100 ? Math.round(rap).toLocaleString("fr-FR") : rap.toLocaleString("fr-FR", { maximumFractionDigits: 2 })) : null, estCode(rap) ? "" : aCoder("rapportMasses")),
+    carte("Horizon de " + a.nom, estCode(rA) ? fmtR(rA) : null, estCode(rA) ? "" : aCoder("rayonSchwarzschild")),
+    carte("Horizon de " + b.nom, estCode(rB) ? fmtR(rB) : null, estCode(rB) ? "" : aCoder("rayonSchwarzschild")),
+    carte("Attraction de A à 1 UA", estCode(gA) ? puissance(gA, 2) + " m/s²" : null, estCode(gA) ? "soit " + Math.round(gA / 9.81).toLocaleString("fr-FR") + " g" : aCoder("attractionA1UA")),
+    carte("Chute de la Terre vers A depuis 1 UA", estCode(tA) ? dureeLisible(tA) : null, estCode(tA) ? "départ à l'arrêt, sans résistance" : aCoder("tempsDeChute"))
+  ].join("");
+
+  dessinerDuo(a, b, rA, rB);
+}
+
+// Les deux horizons côte à côte, à la même échelle, avec l'orbite terrestre en repère
+function dessinerDuo(a, b, rA, rB) {
+  const cv = $("#duo"), dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  x.fillStyle = css("--bg"); x.fillRect(0, 0, w, h);
+  x.font = "13px " + css("--body"); x.textAlign = "center"; x.fillStyle = css("--muted");
+  if (!estCode(rA) || !estCode(rB)) {
+    x.fillText("Code rayonSchwarzschild() pour voir les deux horizons à l'échelle.", w / 2, h / 2);
+    return;
+  }
+  const max = Math.max(rA, rB), rayonMaxPx = Math.min(w / 4.4, h / 2 - 34), k = rayonMaxPx / max;
+  [[a, rA, w * 0.28], [b, rB, w * 0.72]].forEach(([t, r, cx]) => {
+    const cy = h / 2 - 8, rp = Math.max(r * k, 1.5);
+    // orbite terrestre en repère, si elle tient dans le cadre
+    if (UA_M * k < rayonMaxPx * 1.15 && UA_M * k > 3) {
+      x.save(); x.setLineDash([4, 5]); x.strokeStyle = css("--line-2"); x.beginPath(); x.arc(cx, cy, UA_M * k, 0, 7); x.stroke(); x.restore();
+    }
+    x.save(); x.beginPath(); x.arc(cx, cy, rp, 0, 7); x.fillStyle = "#000"; x.fill();
+    x.strokeStyle = css("--accent"); x.lineWidth = 2; x.shadowColor = css("--accent"); x.shadowBlur = mouvementReduit ? 0 : 14; x.stroke(); x.restore();
+    x.fillStyle = css("--fg"); x.fillText(t.nom, cx, h - 14);
+  });
+  const ratio = Math.max(rA, rB) / Math.min(rA, rB);
+  x.fillStyle = css("--muted"); x.textAlign = "left";
+  x.fillText(ratio > 300 ? "Le plus petit horizon fait moins d'un pixel : il est " + Math.round(ratio).toLocaleString("fr-FR") + " fois plus petit." : "Pointillés : orbite de la Terre, quand elle tient dans le cadre.", 12, 20);
+}
+
+// Tests automatiques : ils vérifient tes fonctions à 1 % près
+function lancerTests() {
+  const proche = (v, attendu) => estCode(v) && Math.abs(v - attendu) / attendu < 0.01;
+  const sgra = TROUS_NOIRS[0], ton = TROUS_NOIRS[TROUS_NOIRS.length - 1];
+  const tests = [
+    ["rayonSchwarzschild(1) ≈ 2 954 m (un trou noir d'une masse solaire)", rayonSchwarzschild(1), 2954],
+    ["rayonSchwarzschild(4.297e6) ≈ 1,27·10¹⁰ m (Sgr A*)", rayonSchwarzschild(4.297e6), 1.269e10],
+    ["rapportMasses(TON 618, Sgr A*) ≈ 15 360", rapportMasses(ton, sgra), 15360],
+    ["attractionA1UA(1) ≈ 0,00593 m/s² (le Soleil vu de la Terre)", attractionA1UA(1), 5.93e-3],
+    ["tempsDeChute(4.297e6) ≈ 2 690 s, soit 45 min (Sgr A*)", tempsDeChute(4.297e6), 2692]
+  ];
+  let ok = 0;
+  $("#tests").innerHTML = tests.map(([texte, v, attendu]) => {
+    const etat = v === undefined ? "todo" : proche(v, attendu) ? "pass" : "fail";
+    if (etat === "pass") ok++;
+    const lib = { todo: "à coder", pass: "réussi", fail: "faux" }[etat];
+    const detail = etat === "fail" ? ` — ton résultat : ${estCode(v) ? puissance(v, 3) : String(v)}` : "";
+    return `<li><span class="st ${etat}">${lib}</span><span>${esc(texte)}${esc(detail)}</span></li>`;
+  }).join("");
+  $("#score").textContent = ok + " / " + tests.length + " tests réussis";
+}
+
+selA.addEventListener("change", mettreAJour);
+selB.addEventListener("change", mettreAJour);
+addEventListener("resize", () => { if (!$("#vue-comparateur").hidden) mettreAJour(); });
+
+  </script>
+
+  <!-- ===================== 3 bis. CRÉE TON TROU NOIR ===================== -->
+  <script>
+
+/* =====================================================================
+   CRÉE TON TROU NOIR — utilise les fonctions du comparateur
+   ===================================================================== */
+const PRESETS = [
+  ["Trou noir stellaire (exemple : 10 M☉)", 10],
+  ["Sagittarius A*", 4.297e6],
+  ["Gargantua", 1e8],
+  ["M87*", 6.5e9],
+  ["TON 618", 6.6e10]
+];
+const REPERES = [
+  { n: "Paris (même surface)", r: 5.8, k: "orbit" },
+  { n: "Terre", r: 6371, k: "planet" },
+  { n: "distance Terre-Lune", r: 384400, k: "orbit" },
+  { n: "Soleil", r: 696000, k: "star" },
+  { n: "orbite de Mercure", r: 5.79e7, k: "orbit" },
+  { n: "orbite de la Terre", r: 1.496e8, k: "orbit" },
+  { n: "orbite de Mars", r: 2.279e8, k: "orbit" },
+  { n: "orbite de Jupiter", r: 7.785e8, k: "orbit" },
+  { n: "orbite de Saturne", r: 1.434e9, k: "orbit" },
+  { n: "orbite de Neptune", r: 4.495e9, k: "orbit" }
+];
+const ORBITES = REPERES.filter((r) => r.n.startsWith("orbite"));
+
+function lireMasse(M) {
+  const nf = (x) => x.toLocaleString("fr-FR", { maximumFractionDigits: x < 10 ? 2 : 0 });
+  if (M < 1e3) return nf(M) + " M☉";
+  if (M < 1e6) return nf(M / 1e3) + " millier" + (M >= 2e3 ? "s" : "") + " de M☉";
+  if (M < 1e9) return nf(M / 1e6) + " million" + (M >= 2e6 ? "s" : "") + " de M☉";
+  return nf(M / 1e9) + " milliard" + (M >= 2e9 ? "s" : "") + " de M☉";
+}
+
+function dessinerCreer(rsKm) {
+  const cv = $("#toileCreer"), dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+  if (!w) return;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  x.fillStyle = css("--bg"); x.fillRect(0, 0, w, h);
+  const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.3, k = R / rsKm;
+  const loin = Math.hypot(cx, cy);
+  const col = { line: css("--line-2"), fg: css("--fg"), accent: css("--accent"), star: css("--star"), muted: css("--muted") };
+  const visibles = REPERES.filter((o) => o.r * k > 2 && o.r * k < loin * 1.02).sort((a, b) => b.r - a.r);
+  // repères derrière
+  visibles.forEach((o) => {
+    const r = o.r * k;
+    x.save(); x.beginPath(); x.arc(cx, cy, r, 0, 7);
+    if (o.k === "orbit") { x.setLineDash([4, 5]); x.strokeStyle = col.line; x.lineWidth = 1; x.stroke(); }
+    else if (o.k === "star") { x.fillStyle = col.star; x.globalAlpha = 0.85; x.fill(); }
+    else { x.fillStyle = "#5aa0e6"; x.fill(); }
+    x.restore();
+  });
+  // horizon
+  x.save(); x.beginPath(); x.arc(cx, cy, R, 0, 7);
+  x.fillStyle = "rgba(0,0,0,.92)"; x.fill();
+  x.strokeStyle = col.accent; x.lineWidth = 2.2; x.shadowColor = col.accent; x.shadowBlur = mouvementReduit ? 0 : 22; x.stroke();
+  x.restore();
+  // repères devant l'horizon (ceux qui sont plus petits) : redessinés en contour pour rester visibles
+  visibles.filter((o) => o.r * k < R).forEach((o) => {
+    x.save(); x.beginPath(); x.arc(cx, cy, o.r * k, 0, 7); x.setLineDash([3, 4]);
+    x.strokeStyle = o.k === "star" ? col.star : o.k === "planet" ? "#5aa0e6" : col.muted; x.lineWidth = 1; x.stroke(); x.restore();
+  });
+  // étiquettes
+  x.font = "12px " + css("--body"); x.textBaseline = "middle";
+  const angles = [-0.75, -0.35, 0.05, 0.45, 0.85, -1.1, 1.15];
+  visibles.forEach((o, i) => {
+    const a = angles[i % angles.length], r = o.r * k;
+    let px = cx + Math.cos(a) * r + 6, py = cy + Math.sin(a) * r;
+    const tw = x.measureText(o.n).width;
+    if (px + tw > w - 8) px = w - tw - 8;
+    py = Math.min(Math.max(py, 12), h - 12);
+    x.fillStyle = "rgba(5,6,14,.75)"; x.fillRect(px - 3, py - 9, tw + 6, 18);
+    x.fillStyle = o.k === "star" ? col.star : col.fg; x.fillText(o.n, px, py);
+  });
+  const lab = "horizon : " + fmtKm(rsKm);
+  x.font = "600 13px " + css("--body"); x.textAlign = "center";
+  x.fillStyle = col.accent; x.fillText(lab, cx, Math.min(cy + R + 20, h - 12));
+  x.textAlign = "left";
+}
+
+function majCreer() {
+  const M = 10 ** parseFloat($("#masseLog").value);
+  $("#masseLue").textContent = lireMasse(M);
+  document.querySelectorAll("#presets .chip").forEach((b) => b.classList.toggle("actif", Math.abs(Math.log10(+b.dataset.m) - Math.log10(M)) < 0.02));
+
+  const rs = rayonSchwarzschild(M);       // m
+  const g = attractionA1UA(M);            // m/s²
+  const t = tempsDeChute(M);              // s
+  const Mkg = M * M_SOLEIL;
+  const densite = Mkg / ((4 / 3) * Math.PI * rs ** 3);
+  const maree = (2 * G * Mkg * 2) / rs ** 3;
+  const rsKm = rs / 1000;
+
+  // verdict « à la place du Soleil »
+  const avalees = ORBITES.filter((o) => o.r < rsKm).map((o) => o.n.replace("orbite de ", "").replace("la ", ""));
+  let verdict;
+  if (rsKm > 4.495e9) verdict = "À la place du Soleil, tout le système solaire, Neptune comprise, serait sous l'horizon.";
+  else if (avalees.length) verdict = `À la place du Soleil, l'horizon engloutirait l'orbite de : ${avalees.join(", ")}. Les autres planètes tomberaient.`;
+  else if (M < 1.5) verdict = "À la place du Soleil, la Terre garderait son orbite : même masse, même attraction. Mais sans lumière, elle gèlerait.";
+  else verdict = `À la place du Soleil, aucune orbite n'est sous l'horizon, mais l'attraction est ${Number(M.toPrecision(3)).toLocaleString("fr-FR")} fois plus forte : la Terre, trop lente, tomberait en ${dureeLisible(t)}.`;
+  $("#verdictCreer").textContent = verdict;
+
+  const nf2 = (v) => puissance(v, 2);
+  const mareeTxt = maree < 1 ? "rien senti" : maree < 9.81 * 10 ? "inconfortable" : "déchiqueté (spaghettification)";
+  // ---- effets sur la Terre, dans l'ordre où ils arrivent ----
+  const R_TERRE = 6.371e6, G_TERRE = 9.81, D = UA_M;
+  const vOrbite = Math.sqrt((G * Mkg) / D) / 1000;                     // km/s nécessaires pour rester en orbite à 1 UA
+  const mareeLune = 1.1e-6;                                             // m/s², marée due à la Lune (calcul : 2GM_Lune·R/d³)
+  const mareeTerre = (2 * G * Mkg * R_TERRE) / D ** 3;                  // m/s² à 1 UA
+  const rDislocation = Math.cbrt((2 * G * Mkg * R_TERRE) / G_TERRE);    // m : la marée dépasse la gravité terrestre
+  const ua = (m) => (m / UA_M).toLocaleString("fr-FR", { maximumFractionDigits: m / UA_M < 0.1 ? 3 : 2 }) + " UA";
+  const etapes = [];
+  etapes.push(["Lumière", "Le Soleil disparaît. Un trou noir isolé n'émet pas de lumière : la Terre plonge dans la nuit et se refroidit jusqu'à geler.", "s"]);
+  if (rs > D) {
+    etapes.push(["Orbite", `La Terre est déjà sous l'horizon (${ua(rs)} contre 1 UA). Plus aucun signal ne peut en sortir.`, "c"]);
+  } else if (M < 1.5) {
+    etapes.push(["Orbite", "Même masse que le Soleil : l'attraction ne change pas, la Terre garde exactement son orbite et son année.", "s"]);
+  } else {
+    etapes.push(["Orbite", `Pour rester en orbite à 1 UA, il faudrait ${vOrbite.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} km/s ; la Terre n'a que 30 km/s. Elle tombe vers le trou noir en ${dureeLisible(t)}.`, "c"]);
+  }
+  if (rs < D) {
+    const rapport = mareeTerre / mareeLune;
+    etapes.push(["Marées", `Dès le départ, les marées valent ${rapport < 10 ? rapport.toLocaleString("fr-FR", { maximumFractionDigits: 1 }) : puissance(rapport, 1)} fois celles de la Lune${M < 1.5 ? ", exactement comme le Soleil aujourd'hui" : rapport > 1e4 ? " : océans et croûte terrestre sont violemment déformés" : rapport > 3 ? " : des marées géantes sur les côtes" : ""}.`, "c"]);
+  }
+  if (rs > D) etapes.push(["Fin", "La Terre et tout ce qu'elle contient ont déjà franchi l'horizon.", "c"]);
+  else if (M < 1.5) etapes.push(["Fin", "Pas de fin brutale : la Terre continue de tourner, gelée, dans le noir.", "c"]);
+  else if (rDislocation > rs) etapes.push(["Fin", `Vers ${ua(rDislocation)} du centre, les marées dépassent la gravité de la Terre : elle est disloquée avant d'atteindre l'horizon (${rs / UA_M < 0.01 ? fmtKm(rs / 1000) : ua(rs)}). Ses débris forment un disque de gaz brûlant.`, "c"]);
+  else etapes.push(["Fin", `L'horizon (${ua(rs)}) est plus grand que la zone de dislocation (${ua(rDislocation)}) : la Terre le franchit intacte, sans rien sentir de particulier à cet instant.`, "c"]);
+  $("#effetsTerre").innerHTML = etapes.map(([t2, txt, tag]) => `<li><b>${t2}</b><span>${esc(txt)} <span class="tag">${tag}</span></span></li>`).join("");
+
+  $("#resCreer").innerHTML = [
+    carte("Rayon de l'horizon", fmtKm(rsKm), "r_s = 2GM/c²"),
+    carte("Attraction à 1 UA", nf2(g) + " m/s²", Math.round(g / 9.81).toLocaleString("fr-FR") + " g · le Soleil : 0,006 m/s²"),
+    carte("Chute de la Terre depuis 1 UA", dureeLisible(t), "départ à l'arrêt"),
+    carte("« Densité » sous l'horizon", nf2(densite) + " kg/m³", densite > 1000 ? "plus dense que l'eau" : densite > 1.2 ? "moins dense que l'eau" : "moins dense que l'air"),
+    carte("Étirement à l'horizon (corps de 2 m)", nf2(maree) + " m/s²", mareeTxt)
+  ].join("");
+  dessinerCreer(rsKm);
+}
+
+$("#presets").insertAdjacentHTML("beforeend", PRESETS.map(([n, m]) => `<button type="button" class="chip" data-m="${m}">${esc(n)}</button>`).join(""));
+$("#presets").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-m]"); if (!b) return;
+  const cible = Math.log10(+b.dataset.m), curseur = $("#masseLog"), depart = parseFloat(curseur.value);
+  if (mouvementReduit) { curseur.value = cible; majCreer(); return; }
+  const t0 = performance.now();
+  const pas = (t) => {
+    const p = Math.min((t - t0) / 600, 1), l = 1 - Math.pow(1 - p, 3);
+    curseur.value = depart + (cible - depart) * l; majCreer();
+    if (p < 1) requestAnimationFrame(pas);
+  };
+  requestAnimationFrame(pas);
+});
+$("#masseLog").addEventListener("input", majCreer);
+addEventListener("resize", () => { if (!$("#vue-creer").hidden) majCreer(); });
+
+  </script>
+
+  <!-- ===================== 4. MENU ET NAVIGATION ===================== -->
+  <script>
+/* =====================================================================
+   NAVIGATION : menu déroulant + routage (une seule page ; la vue
+   change selon l'adresse : #gargantua, #comparateur, #methode…)
+   ===================================================================== */
+function construireMenu() {
+  const m = $("#menu");
+  m.innerHTML = CATEGORIES.map((k) => `
+    <li><button class="menu-btn" type="button" aria-expanded="false" aria-controls="drop-${k.id}" data-cat="${k.id}">${esc(k.nom)}<svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="drop" id="drop-${k.id}">
+        <div class="drop-head">${esc(k.nom)} · comparaisons</div>
+        ${k.items.map(([id, nom, desc]) => `<a href="#${id}" data-id="${id}"><b>${esc(nom)}</b><span>${esc(desc)}</span></a>`).join("")}
+      </div></li>`).join("") +
+    `<li><button class="menu-btn" type="button" aria-expanded="false" aria-controls="drop-outils" data-cat="outils">Outils<svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="drop" id="drop-outils">
+        <div class="drop-head">Outils interactifs</div>
+        <a href="#creer" data-id="creer"><b>Crée ton trou noir</b><span>Choisis une masse et vois ce qu'il ferait au système solaire</span></a>
+        <a href="#comparateur" data-id="comparateur"><b>Comparateur</b><span>Deux trous noirs face à face</span></a>
+        <a href="#methode" data-id="methode"><b>Méthode & sources</b><span>D'où vient chaque chiffre du site</span></a>
+      </div></li>`;
+
+  const burger = $(".burger");
+  const fermerTout = (sauf) => document.querySelectorAll(".menu-btn").forEach((b) => {
+    if (b === sauf) return;
+    b.setAttribute("aria-expanded", "false");
+    $("#drop-" + b.dataset.cat).classList.remove("open");
+  });
+  const fermerMobile = () => { m.classList.remove("open"); burger.setAttribute("aria-expanded", "false"); };
+
+  m.addEventListener("click", (e) => {
+    const b = e.target.closest(".menu-btn");
+    if (!b) return;
+    const ouvrir = b.getAttribute("aria-expanded") !== "true";
+    fermerTout(b);
+    b.setAttribute("aria-expanded", ouvrir);
+    $("#drop-" + b.dataset.cat).classList.toggle("open", ouvrir);
+  });
+  burger.addEventListener("click", () => burger.setAttribute("aria-expanded", m.classList.toggle("open")));
+  document.addEventListener("click", (e) => { if (!e.target.closest(".menu") && !e.target.closest(".burger")) fermerTout(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { fermerTout(); fermerMobile(); } });
+  addEventListener("hashchange", () => { fermerTout(); fermerMobile(); });
+}
+
+/* =====================================================================
+   RENDU D'ARTISTE D'UN TROU NOIR (TON 618) — dessiné par le site
+   Ombre noire + anneau de photons + disque d'accrétion incliné.
+   La partie du disque située derrière le trou noir est « relevée »
+   au-dessus de l'ombre par la déviation de la lumière (effet de lentille),
+   comme dans Interstellar. Le côté gauche, qui vient vers nous, est
+   plus brillant (effet Doppler). Rendu artistique, pas une photo.
+   ===================================================================== */
+function dessinerTrouNoir(canvas, largeur, hauteur, options = {}) {
+  canvas.width = largeur; canvas.height = hauteur;
+  const x = canvas.getContext("2d");
+  const W = largeur, H = hauteur;
+  const cx = W * (options.cx ?? 0.62), cy = H * (options.cy ?? 0.5);
+  const rs = Math.min(W, H) * (options.taille ?? 0.15);   // rayon de l'ombre en pixels
+  const inclinaison = 0.1;                               // aplatissement du disque vu presque de profil
+
+  // graine fixe : le dessin est toujours le même
+  let graine = 618;
+  const hasard = () => (graine = (graine * 16807) % 2147483647) / 2147483647;
+  // turbulence du gaz : somme de sinus, sans bibliothèque
+  const turbulence = (a, r) =>
+    0.55 + 0.25 * Math.sin(a * 7 + r * 0.045) + 0.15 * Math.sin(a * 19 - r * 0.11 + 1.3) + 0.1 * Math.sin(a * 41 + r * 0.31);
+
+  // 1. fond spatial
+  const fond = x.createRadialGradient(cx, cy, rs * 0.5, cx, cy, Math.max(W, H) * 0.9);
+  fond.addColorStop(0, "#160d08"); fond.addColorStop(0.35, "#0a0814"); fond.addColorStop(1, "#03040a");
+  x.fillStyle = fond; x.fillRect(0, 0, W, H);
+  for (let i = 0; i < (W * H) / 900; i++) {
+    const px = hasard() * W, py = hasard() * H, d = Math.hypot(px - cx, py - cy);
+    if (d < rs * 1.6) continue;
+    x.globalAlpha = 0.15 + hasard() * 0.7;
+    x.fillStyle = hasard() > 0.9 ? "#ffd9a8" : hasard() > 0.8 ? "#b8ccff" : "#ffffff";
+    x.beginPath(); x.arc(px, py, (hasard() * 0.9 + 0.25) * (W / 1920), 0, 7); x.fill();
+  }
+  x.globalAlpha = 1;
+
+  // couleur du gaz selon la distance au centre (plus chaud = plus blanc)
+  const couleur = (t, lum) => {
+    const r = 255, g = Math.round(235 - 150 * t), b = Math.round(205 - 185 * t);
+    return `rgba(${r},${g},${Math.max(b, 20)},${lum})`;
+  };
+  const doppler = (a) => 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(a - Math.PI)); // gauche = plus brillant
+
+  // dessine une portion du disque (anneaux concentriques en petits arcs)
+  const calque = document.createElement("canvas");
+  calque.width = W; calque.height = H;
+  function disque(debut, fin, rMin, rMax, aplat, decalageY, intensite, attenuerBords = false) {
+    const cible = x;
+    const x2 = calque.getContext("2d");
+    x2.clearRect(0, 0, W, H);
+    { const x = x2;
+    x.save(); x.globalCompositeOperation = "lighter";
+    const nAnneaux = 140;
+    for (let i = 0; i < nAnneaux; i++) {
+      const t = i / nAnneaux, r = rMin + (rMax - rMin) * Math.pow(t, 1.25);
+      const pas = 0.012;
+      x.lineWidth = Math.max(((rMax - rMin) / nAnneaux) * 2.6, 0.8);
+      for (let a = debut; a < fin; a += pas) {
+        const bord = attenuerBords ? Math.pow(Math.abs(Math.sin(a)), 0.8) : 1;
+        const lum = 0.55 * bord * intensite * turbulence(a, r) * doppler(a) * (1 - t) ** 1.4;
+        if (lum < 0.01) continue;
+        x.strokeStyle = couleur(t, Math.min(lum, 1));
+        x.beginPath();
+        x.ellipse(cx, cy + decalageY * r, r, r * aplat, 0, a, a + pas * 1.25);
+        x.stroke();
+      }
+    }
+    x.restore();
+    }
+    cible.save(); cible.globalCompositeOperation = "lighter";
+    cible.filter = `blur(${Math.max(1, Math.round(rs * 0.012))}px)`;
+    cible.drawImage(calque, 0, 0);
+    cible.restore(); cible.filter = "none";
+  }
+
+  // 2. jets du quasar (TON 618 est un quasar actif), très discrets
+  x.save(); x.globalCompositeOperation = "lighter";
+  [-1, 1].forEach((s) => {
+    const g = x.createLinearGradient(cx, cy, cx, cy + s * H * 0.6);
+    g.addColorStop(0, "rgba(150,180,255,0.16)"); g.addColorStop(1, "rgba(150,180,255,0)");
+    x.fillStyle = g;
+    x.filter = `blur(${Math.round(rs * 0.06)}px)`;
+    x.beginPath(); x.moveTo(cx - rs * 0.05, cy); x.lineTo(cx - rs * 0.22, cy + s * H * 0.6);
+    x.lineTo(cx + rs * 0.22, cy + s * H * 0.6); x.lineTo(cx + rs * 0.05, cy); x.fill();
+    x.filter = "none";
+  });
+  x.restore();
+
+  // 3. moitié arrière du disque (au-dessus du centre, derrière le trou noir)
+  disque(Math.PI, Math.PI * 2, rs * 1.25, rs * 4.6, inclinaison, 0, 0.55);
+  // 4. image relevée par la lentille gravitationnelle : un arc qui passe au-dessus de l'ombre
+  disque(Math.PI, Math.PI * 2, rs * 1.05, rs * 1.4, 0.97, 0, 2.2, true);
+  // 5. ombre
+  x.fillStyle = "#000"; x.beginPath(); x.arc(cx, cy, rs, 0, 7); x.fill();
+  // 6. anneau de photons
+  x.save(); x.globalCompositeOperation = "lighter";
+  x.strokeStyle = "rgba(255,236,200,0.9)"; x.lineWidth = Math.max(rs * 0.018, 1);
+  x.beginPath(); x.arc(cx, cy, rs * 1.03, 0, 7); x.stroke();
+  x.restore();
+  // 7. arc inférieur, plus fin
+  disque(0, Math.PI, rs * 1.04, rs * 1.2, 0.95, 0, 0.6, true);
+
+  // 8. halo lumineux (bloom) : on floute une copie réduite de l'image et on l'ajoute
+  function halo(force, flou) {
+    const h = document.createElement("canvas");
+    h.width = Math.round(W / 4); h.height = Math.round(H / 4);
+    h.getContext("2d").drawImage(canvas, 0, 0, h.width, h.height);
+    x.save(); x.globalCompositeOperation = "lighter"; x.globalAlpha = force;
+    x.filter = `blur(${Math.round(rs * flou)}px)`;
+    x.drawImage(h, 0, 0, W, H);
+    x.restore(); x.filter = "none";
+  }
+  halo(0.5, 0.12);
+  // l'ombre reste noire au centre
+  const ombre = x.createRadialGradient(cx, cy, 0, cx, cy, rs);
+  ombre.addColorStop(0, "#000"); ombre.addColorStop(0.9, "#000"); ombre.addColorStop(1, "rgba(0,0,0,0)");
+  x.fillStyle = ombre; x.beginPath(); x.arc(cx, cy, rs, 0, 7); x.fill();
+  // 9. moitié avant du disque, qui passe DEVANT l'ombre
+  disque(0, Math.PI, rs * 1.25, rs * 4.6, inclinaison, 0, 0.6);
+  halo(0.22, 0.06);
+
+  // 10. vignette pour la lisibilité du texte
+  const v = x.createLinearGradient(0, 0, W, 0);
+  v.addColorStop(0, "rgba(3,4,10,0.85)"); v.addColorStop(0.45, "rgba(3,4,10,0.25)"); v.addColorStop(1, "rgba(3,4,10,0)");
+  if (options.vignette !== false) { x.fillStyle = v; x.fillRect(0, 0, W, H); }
+}
+
+// Héros : on redessine seulement si la largeur change
+let largeurHeros = 0;
+function dessinerHeros() {
+  const c = $("#heroTon"); if (!c || !c.clientWidth) return;
+  if (c.clientWidth === largeurHeros) return;
+  largeurHeros = c.clientWidth;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), etroit = c.clientWidth < 760;
+  const w = Math.min(Math.round(c.clientWidth * dpr), 3840), h = Math.round(c.clientHeight * dpr * (w / (c.clientWidth * dpr)));
+  dessinerTrouNoir(c, w, h, etroit ? { cx: 0.5, cy: 0.5, taille: 0.15, vignette: false } : { cx: 0.68, cy: 0.5, taille: 0.15 });
+}
+let minuterieHeros;
+addEventListener("resize", () => { clearTimeout(minuterieHeros); minuterieHeros = setTimeout(dessinerHeros, 250); });
+
+function construireAccueil() {
+  dessinerRegle($("#regle"));
+  $("#categories").innerHTML = CATEGORIES.map((k) => `
+    <section class="cat-group" aria-label="${esc(k.nom)}">
+      <div class="cat-title"><h3>${esc(k.nom)}</h3><span>${k.items.length} comparaison${k.items.length > 1 ? "s" : ""}</span></div>
+      <div class="cards">${k.items.map(([id]) => {
+        const f = FICHES.find((x) => x.id === id);
+        return `<a class="card${f.fic ? " fic" : ""}" href="#${f.id}"><span class="type">${esc(f.type)}</span><h4>${esc(f.tab)}</h4><p>${esc(f.key)}</p><span class="go">Voir la comparaison →</span></a>`;
+      }).join("")}</div>
+    </section>`).join("");
+  $("#toutesSources").innerHTML = Object.values(S)
+    .map((s) => `<li><a href="${s.u}" target="_blank" rel="noopener">${esc(s.t)}</a></li>`).join("");
+}
+
+let cleCourante = decodeURIComponent(location.hash.slice(1));
+
+// Aller à une vue sans dépendre du navigateur : marche aussi dans un aperçu de fichier
+function aller(cle) {
+  cleCourante = cle;
+  try { history.pushState(null, "", cle ? "#" + cle : location.pathname + location.search); } catch (e) {}
+  document.querySelectorAll(".menu-btn").forEach((b) => { b.setAttribute("aria-expanded", "false"); $("#drop-" + b.dataset.cat).classList.remove("open"); });
+  $("#menu").classList.remove("open"); $(".burger").setAttribute("aria-expanded", "false");
+  router();
+}
+
+// Tous les liens internes (href="#...") passent par aller()
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  e.preventDefault();
+  aller(decodeURIComponent(a.getAttribute("href").slice(1)));
+});
+
+function router() {
+  const cle = cleCourante;
+  const estFiche = FICHES.some((f) => f.id === cle);
+  const vue = estFiche ? "astre" : ["comparateur", "methode", "creer"].includes(cle) ? cle : "accueil";
+  const changer = () => {
+    document.querySelectorAll(".vue").forEach((v) => { v.hidden = v.id !== "vue-" + vue; });
+    if (vue === "astre") afficherFiche(cle);
+    else document.title = { accueil: "Hors-Champ", comparateur: "Comparateur · Hors-Champ", methode: "Méthode · Hors-Champ", creer: "Crée ton trou noir · Hors-Champ" }[vue];
+    if (vue === "comparateur") { mettreAJour(); lancerTests(); }
+    if (vue === "accueil") requestAnimationFrame(dessinerHeros);
+    if (vue === "creer") requestAnimationFrame(majCreer);
+    document.querySelectorAll(".drop a").forEach((a) => a.toggleAttribute("aria-current", a.dataset.id === cle));
+    document.querySelectorAll(".menu-btn").forEach((b) => {
+      const cat = CATEGORIES.find((k) => k.id === b.dataset.cat);
+      b.classList.toggle("on", cat ? estFiche && cat.items.some((it) => it[0] === cle) : ["creer", "comparateur", "methode"].includes(vue));
+    });
+    document.querySelectorAll(".menu-link").forEach((a) => a.classList.toggle("on", a.dataset.vue === vue));
+    window.scrollTo(0, 0);
+  };
+  if (document.startViewTransition && !mouvementReduit) document.startViewTransition(changer); else changer();
+}
+
+construireMenu();
+construireAccueil();
+addEventListener("hashchange", () => { cleCourante = decodeURIComponent(location.hash.slice(1)); router(); });
+addEventListener("popstate", () => { cleCourante = decodeURIComponent(location.hash.slice(1)); router(); });
+router();
+
+  </script>
+</body>
+</html>
