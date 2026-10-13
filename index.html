@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hors-Champ</title>
-  <meta name="description" content="Hors-Champ : l'astronomie que les films laissent hors du cadre. Trous noirs, étoiles à neutrons et planètes du cinéma, comparés à ce que la science a mesuré.">
+  <title>Hors-Champs</title>
+  <meta name="description" content="Hors-Champs : l'astronomie que les films laissent hors du cadre. Trous noirs, étoiles à neutrons et planètes du cinéma, comparés à ce que la science a mesuré.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230a0d1a'/%3E%3Cellipse cx='16' cy='16' rx='13' ry='4' fill='none' stroke='%23f0b25a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23000' stroke='%23f0b25a' stroke-width='1.5'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..700&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
   <style>
 /* =====================================================================
-   Hors-Champ — feuille de style commune à toutes les pages
+   Hors-Champs — feuille de style commune à toutes les pages
    Thème unique : ciel nocturne. Toutes les couleurs sont des variables.
    ===================================================================== */
 :root {
@@ -397,6 +397,160 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
   .drop.open { display: flex; }
 }
 
+
+/* =====================================================================
+   REFONTE « VRAI SITE » : navigation fixe, bandeaux pleine largeur,
+   cartes illustrées, contenu éditorial sans encadrés.
+   ===================================================================== */
+:root { --nav-h: 68px; --page: 1200px; }
+html, body { overflow-x: clip; }
+body { font-size: 17px; }
+main { max-width: var(--page); padding-block: 0 96px; gap: 72px; }
+.vue { gap: 64px; }
+
+/* Libellés : plus de police « code » */
+.eyebrow, h3, .ftype, .card .type, .sc .where, .tech .where, .drop-head, table.cmp th, .legende, .masse-tete label {
+  font-family: var(--body); font-weight: 600; letter-spacing: .16em;
+}
+.eyebrow { font-size: 12px; }
+
+/* Navigation fixe, transparente en haut de page */
+.nav { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(rgba(5,6,14,.8), rgba(5,6,14,0)); border-bottom: 1px solid transparent; backdrop-filter: none; -webkit-backdrop-filter: none; transition: background .3s, border-color .3s; }
+.nav.solide { background: rgba(5,6,14,.92); border-bottom-color: var(--line); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.nav-in { max-width: 1280px; height: var(--nav-h); gap: 20px; }
+.menu { margin-left: auto; }
+.nav-cta { padding: 9px 16px; font-size: 14px; white-space: nowrap; }
+.btn { border-radius: 8px; }
+@media (max-width: 1320px) { .nav-cta { display: none; } }
+@media (max-width: 1180px) { .menu { top: var(--nav-h); max-height: calc(100vh - var(--nav-h)); } .burger { margin-left: auto; } }
+
+/* Bandeaux de page pleine largeur */
+.hero-ton, .vue > .hero {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: max(20px, calc(50vw - var(--page) / 2 + 20px));
+  border: 0; border-radius: 0;
+}
+.vue > .hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-top: calc(var(--nav-h) + 72px); padding-bottom: 64px; gap: 16px;
+  min-height: 380px; justify-content: flex-end;
+}
+.vue > .hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background: var(--art, radial-gradient(ellipse 50% 60% at 80% 40%, rgba(92,60,170,.45), transparent 70%), radial-gradient(ellipse 40% 50% at 60% 80%, rgba(24,96,128,.35), transparent 70%)), var(--art-base, #070816);
+}
+.vue > .hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(5,6,14,.92) 0%, rgba(5,6,14,.55) 45%, rgba(5,6,14,0) 75%), linear-gradient(180deg, rgba(5,6,14,0) 60%, var(--bg) 100%);
+}
+.vue > .hero h1, .vue > .hero h1.small { font-size: clamp(40px, 6.4vw, 80px); line-height: 1; letter-spacing: -.02em; max-width: 16ch; }
+.vue > .hero .lede { font-size: 19px; max-width: 58ch; color: #cfd1e4; }
+.vue > .hero .breadcrumb { margin-bottom: 8px; }
+#ficheTitre { display: flex; flex-direction: column; gap: 16px; }
+
+/* Illustrations par catégorie (bandeaux et cartes) */
+[data-cat="trous-noirs"] { --art-base: #0d0706;
+  --art: radial-gradient(circle at 74% 50%, #000 0 11%, rgba(255,236,200,.95) 11.6%, rgba(240,160,70,.55) 14%, transparent 24%), radial-gradient(ellipse 34% 7% at 74% 52%, rgba(255,200,130,.85), rgba(240,140,50,.35) 55%, transparent 75%), radial-gradient(ellipse 60% 70% at 74% 50%, rgba(140,60,20,.35), transparent 70%); }
+[data-cat="neutrons"] { --art-base: #060a1a;
+  --art: radial-gradient(circle at 72% 50%, #fff 0 1.4%, #b8d2ff 2.6%, rgba(120,160,255,.45) 8%, transparent 26%), linear-gradient(118deg, transparent 47%, rgba(150,190,255,.32) 49.5%, rgba(150,190,255,.32) 50.5%, transparent 53%), radial-gradient(ellipse 60% 70% at 72% 50%, rgba(40,70,160,.35), transparent 70%); }
+[data-cat="etoiles"] { --art-base: #120910;
+  --art: radial-gradient(circle at 66% 52%, #fff6dc 0 5%, #ffb35c 8%, rgba(255,140,60,.35) 14%, transparent 26%), radial-gradient(circle at 82% 40%, #ffd9c0 0 2.4%, #ff7a50 4%, rgba(255,90,60,.3) 8%, transparent 16%), radial-gradient(ellipse 60% 70% at 72% 50%, rgba(150,60,40,.3), transparent 70%); }
+[data-cat="planetes"] { --art-base: #0c0810;
+  --art: radial-gradient(circle at 70% 52%, #f2a06c 0, #c45a32 9%, #6b2414 17%, #2a0d08 20.5%, transparent 21%), radial-gradient(circle at 70% 52%, rgba(255,140,90,.25) 21%, transparent 30%); }
+[data-cat="hypothetique"] { --art-base: #0a0720;
+  --art: radial-gradient(circle at 72% 50%, #05060e 0 7%, rgba(220,190,255,.9) 7.6%, rgba(150,110,255,.55) 11%, rgba(60,140,200,.3) 18%, transparent 32%), radial-gradient(ellipse 60% 70% at 72% 50%, rgba(90,50,180,.35), transparent 70%); }
+
+/* Accueil */
+.hero-ton { min-height: min(100vh, 920px); margin-top: 0; padding-top: var(--nav-h); }
+.hero-txt { padding-inline: 0; max-width: min(620px, 52%); }
+.hero-txt h1 { font-size: clamp(44px, 6.4vw, 88px); }
+.legende { font-size: 11.5px; letter-spacing: .04em; right: max(20px, calc(50vw - var(--page) / 2 + 20px)); }
+.marque { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: end; padding-top: 24px; }
+.marque h2 { font-size: clamp(32px, 4.2vw, 54px); line-height: 1.05; margin-top: 12px; }
+.sec-head { display: flex; flex-direction: column; gap: 12px; }
+.sec-head h2, .cat-title h2 { font-size: clamp(30px, 3.6vw, 46px); line-height: 1.05; }
+.bande { border-top: 1px solid var(--line); padding-top: 56px; gap: 22px; }
+.cat-group { border-top: 1px solid var(--line); padding-top: 48px; gap: 26px; }
+.cat-title { justify-content: space-between; align-items: flex-end; gap: 20px; }
+.cat-title h2 { margin-top: 8px; }
+.lien-cat { font-size: 15px; color: var(--accent); white-space: nowrap; }
+#categories { gap: 64px !important; }
+
+/* Cartes */
+.cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+.card { padding: 0 0 22px; gap: 10px; border: 0; border-radius: 10px; background: rgba(16,19,40,.55); backdrop-filter: none; -webkit-backdrop-filter: none; overflow: hidden; }
+.card > *:not(.visuel) { margin-inline: 22px; }
+.card .visuel { display: block; height: 190px; margin-bottom: 10px; background: var(--art, none), var(--art-base, #0b0d1e); background-size: 100% 100%; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.card[data-cat] .visuel { background-position: 0 0; }
+.card:hover { transform: none; background: rgba(22,26,54,.75); }
+.card:hover .visuel { transform: scale(1.06); }
+.card h4 { font-size: 26px; }
+.card .go { font-weight: 600; }
+
+/* Pages de contenu : plus d'encadrés */
+.fiche { background: none; border: 0; padding: 0; border-radius: 0; backdrop-filter: none; -webkit-backdrop-filter: none; gap: 56px; }
+.fhead { gap: 22px; }
+.facts { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0; border-block: 1px solid var(--line); }
+.fact { border-top: 0; padding: 22px 24px 22px 0; }
+.fact + .fact { border-left: 1px solid var(--line); padding-left: 24px; }
+.fact b { font-family: var(--display); font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; }
+.fact span { font-size: 14px; }
+.block { border-top: 0; padding-top: 0; gap: 20px; }
+.bhead { gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+.bhead h4, .block h4 { font-size: clamp(26px, 2.8vw, 36px); }
+.bnum { font-size: 13px; }
+.cv { border-radius: 10px; }
+.sc, .tech, .cine, .res { border-radius: 10px; background: rgba(16,19,40,.6); }
+.panel { border-radius: 12px; background: rgba(16,19,40,.6); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.sousnav { gap: 0; border-bottom: 1px solid var(--line); margin-top: -40px; }
+.sousnav .tab { border: 0; border-radius: 0; padding: 14px 18px; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.sousnav .tab:hover { color: var(--fg); }
+.sousnav .tab[aria-current="page"] { background: none; color: var(--fg); border-bottom-color: var(--accent); font-weight: 600; }
+.pager { border-top: 1px solid var(--line); padding-top: 28px; }
+
+/* Pied de page */
+.foot { margin-top: 0; }
+.foot-grid { max-width: var(--page); margin: 0 auto; padding-inline: 20px; padding-block: 64px 40px; display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 40px; }
+.foot-grid h6 { margin: 0 0 14px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.foot-grid a { color: var(--fg); text-decoration: none; font-size: 15px; }
+.foot-grid a:hover { color: var(--accent); }
+.foot-grid p { margin: 0; font-size: 14.5px; color: var(--muted); max-width: 40ch; }
+.foot-marque { display: flex; flex-direction: column; gap: 14px; }
+.foot-bas { max-width: var(--page); margin: 0 auto; padding: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .marque { grid-template-columns: 1fr; gap: 20px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .foot-marque { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .vue > .hero { padding-top: calc(var(--nav-h) + 40px); padding-bottom: 40px; min-height: 300px; }
+  .vue > .hero::after { background: linear-gradient(180deg, rgba(5,6,14,.35) 0%, rgba(5,6,14,.75) 60%, var(--bg) 100%); }
+  .hero-ton { padding-top: var(--nav-h); }
+  .hero-txt { max-width: none; padding-inline: 0; }
+  .legende { padding-inline: 0; }
+  .fact + .fact { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+  .sousnav { overflow-x: auto; flex-wrap: nowrap; margin-top: -32px; }
+  .sousnav .tab { white-space: nowrap; }
+  .cat-title { flex-direction: column; align-items: flex-start; }
+}
+
+/* Raccords des bandeaux avec le fond étoilé */
+#ciel { opacity: .6; }
+.vue > .hero::before { -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); }
+.vue > .hero::after { background: linear-gradient(90deg, rgba(5,6,14,.9) 0%, rgba(5,6,14,.5) 45%, rgba(5,6,14,0) 75%); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); }
+.hero-ton { background: transparent; }
+.hero-ton canvas { -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent); mask-image: linear-gradient(180deg, #000 72%, transparent); }
+.cat-group .cards, #catCartes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card .visuel { height: 220px; }
+@media (max-width: 760px) {
+  .cat-group .cards, #catCartes { grid-template-columns: 1fr; }
+  .card .visuel { height: 170px; }
+  .vue > .hero::after { background: linear-gradient(180deg, rgba(5,6,14,.2) 0%, rgba(5,6,14,.7) 70%); }
+  .vue > .hero { --art-pos: 1; }
+}
   </style>
 </head>
 <body>
@@ -404,9 +558,10 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
 
   <nav class="nav" aria-label="Navigation principale">
     <div class="nav-in">
-      <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="16" rx="14" ry="4.5" fill="none" stroke="#f0b25a" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="#000" stroke="#f0b25a" stroke-width="1.5"/></svg><span>Hors-<em>Champ</em></span></a>
+      <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="16" rx="14" ry="4.5" fill="none" stroke="#f0b25a" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="#000" stroke="#f0b25a" stroke-width="1.5"/></svg><span>Hors-<em>Champs</em></span></a>
       <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">☰</button>
       <ul class="menu" id="menu"></ul>
+      <a class="btn primary nav-cta" href="#creer">Crée ton trou noir</a>
     </div>
   </nav>
 
@@ -427,12 +582,13 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
       </section>
 
       <header class="marque">
-        <div class="eyebrow">Hors-Champ · l'astronomie derrière les films</div>
-        <h2>Ce que l'écran montre, ce que la physique impose.</h2>
+        <div><div class="eyebrow">Le projet</div>
+        <h2>Ce que l'écran montre, ce que la physique impose.</h2></div>
         <p class="lede">Gargantua, la forge de Nidavellir, Tatooine, la tempête de Seul sur Mars… Chaque astre est mis à l'échelle face au Soleil, comparé à de vrais objets, puis placé à la place du Soleil pour voir ce qui arriverait à la Terre.</p>
       </header>
-      <section class="stack" aria-labelledby="t-regle">
-        <h3 id="t-regle">Distance depuis la Terre · années-lumière · échelle logarithmique</h3>
+      <section class="stack bande" aria-labelledby="t-regle">
+        <div class="sec-head"><div class="eyebrow">Distances</div><h2 id="t-regle">Du plus proche au plus lointain</h2>
+        <p class="lede">Distance depuis la Terre en années-lumière, sur une échelle logarithmique : chaque graduation multiplie la distance par 10. Clique sur un astre.</p></div>
         <div class="ruler-scroll"><div class="ruler" id="regle"></div></div>
         <div class="legend"><span><i class="l1"></i>Objet réel</span><span><i class="l3"></i>Objet de fiction (distance donnée pour le film)</span></div>
       </section>
@@ -440,8 +596,8 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
     </div>
 
     <div class="vue" id="vue-categorie" hidden>
-      <nav class="breadcrumb" id="filCat" aria-label="Fil d'Ariane"></nav>
-      <header class="hero">
+      <header class="hero" id="catHead">
+        <nav class="breadcrumb" id="filCat" aria-label="Fil d'Ariane"></nav>
         <div class="eyebrow">Catégorie</div>
         <h1 class="small" id="catTitre"></h1>
         <p class="lede" id="catDesc"></p>
@@ -451,17 +607,18 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
     </div>
 
     <div class="vue" id="vue-astre" hidden>
-      <div class="stack" style="gap:14px">
+      <header class="hero" id="ficheHead">
         <nav class="breadcrumb" id="fil" aria-label="Fil d'Ariane"></nav>
-        <nav class="tabs" id="onglets" aria-label="Comparaisons de la catégorie"></nav>
-      </div>
+        <div id="ficheTitre"></div>
+      </header>
+      <nav class="tabs sousnav" id="onglets" aria-label="Comparaisons de la catégorie"></nav>
       <article class="fiche" id="fiche"></article>
       <nav class="pager" id="pager" aria-label="Comparaison précédente ou suivante"></nav>
     </div>
 
     <div class="vue" id="vue-comparateur" hidden>
-      <header class="hero">
-        <div class="eyebrow">Codé par Raphaël</div>
+      <header class="hero" data-cat="trous-noirs">
+        <div class="eyebrow">Outil · codé par Raphaël</div>
         <h1 class="small">Comparateur de trous noirs</h1>
         <p class="lede">Choisis deux trous noirs. Le site calcule le rapport de leurs masses, la taille de leur horizon et l'attraction qu'ils exercent à la distance Terre-Soleil.</p>
       </header>
@@ -482,7 +639,7 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
     </div>
 
     <div class="vue" id="vue-creer" hidden>
-      <header class="hero">
+      <header class="hero" data-cat="trous-noirs">
         <div class="eyebrow">Outil interactif</div>
         <h1 class="small">Crée ton trou noir</h1>
         <p class="lede">Choisis une masse. Le site calcule la taille de l'horizon, l'attraction qu'il exercerait sur la Terre, et ce qui arriverait s'il prenait la place du Soleil.</p>
@@ -537,16 +694,25 @@ a.drop-head:hover { background: transparent; text-decoration: underline; }
 
 
   <footer class="foot">
-    <div class="foot-in">
-      <span>Hors-Champ · projet de Raphaël · 2026-2027</span>
-      <span>Étiquettes : <b>s</b> sourcé · <b>c</b> calcul · <b>m</b> de mémoire — <a href="#methode">méthode</a></span>
+    <div class="foot-grid">
+      <div class="foot-marque">
+        <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="16" rx="14" ry="4.5" fill="none" stroke="#f0b25a" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="#000" stroke="#f0b25a" stroke-width="1.5"/></svg><span>Hors-<em>Champs</em></span></a>
+        <p>L'astronomie que les films laissent hors du cadre. Chaque chiffre du site est sourcé ou calculé, et étiqueté comme tel.</p>
+      </div>
+      <nav aria-label="Catégories"><h6>Explorer</h6><ul>
+        <li><a href="#cat-trous-noirs">Trous noirs</a></li><li><a href="#cat-neutrons">Étoiles à neutrons</a></li>
+        <li><a href="#cat-etoiles">Étoiles</a></li><li><a href="#cat-planetes">Planètes</a></li><li><a href="#cat-hypothetique">Hypothétique</a></li></ul></nav>
+      <nav aria-label="Outils"><h6>Outils</h6><ul>
+        <li><a href="#creer">Crée ton trou noir</a></li><li><a href="#comparateur">Comparateur</a></li><li><a href="#methode">Méthode & sources</a></li></ul></nav>
+      <div><h6>Le projet</h6><p>Conçu et codé par Raphaël, 2026-2027. Vues d'artiste générées par le site ; données issues des sources citées sur chaque page.</p></div>
     </div>
+    <div class="foot-bas"><span>© 2026 Hors-Champs</span><span>s sourcé · c calcul · m de mémoire</span></div>
   </footer>
 
   <!-- ===================== 1. DONNÉES (tout le contenu du site) ===================== -->
   <script>
 /* =====================================================================
-   Hors-Champ — DONNÉES
+   Hors-Champs — DONNÉES
    Tout le contenu du site est ici. Pour ajouter un astre :
    1. ajoute ses sources dans S,
    2. ajoute sa fiche dans FICHES (copie une fiche existante comme modèle),
@@ -821,7 +987,7 @@ const CATEGORIES = [
   <!-- ===================== 2. OUTILS ET DESSINS ===================== -->
   <script>
 /* =====================================================================
-   Hors-Champ — OUTILS COMMUNS (chargé sur toutes les pages)
+   Hors-Champs — OUTILS COMMUNS (chargé sur toutes les pages)
    ===================================================================== */
 
 const $ = (s) => document.querySelector(s);
@@ -920,7 +1086,7 @@ dessinerCiel();
 addEventListener("resize", dessinerCiel);
 
 /* =====================================================================
-   Hors-Champ — VUE « À L'ÉCHELLE »
+   Hors-Champs — VUE « À L'ÉCHELLE »
    Dessine des cercles concentriques à la même échelle (rayons en km)
    et gère le zoom (curseur + boutons « Cadrer sur », avec animation).
    ===================================================================== */
@@ -1029,7 +1195,7 @@ function creerEchelle(canvas, curseur, lecture, horsCadre, objets, vueDepart) {
 }
 
 /* =====================================================================
-   Hors-Champ — PAGE D'UN ASTRE
+   Hors-Champs — PAGE D'UN ASTRE
    ===================================================================== */
 
 function tableau(t) {
@@ -1040,7 +1206,7 @@ function tableau(t) {
 function afficherFiche(id) {
   const i = Math.max(FICHES.findIndex((f) => f.id === id), 0);
   const f = FICHES[i];
-  document.title = f.tab + " · Hors-Champ";
+  document.title = f.tab + " · Hors-Champs";
   const cat = CATEGORIES.find((k) => k.items.some((it) => it[0] === f.id));
   $("#fil").innerHTML = `<a href="#">Accueil</a><span aria-hidden="true">›</span><a href="#cat-${cat.id}">${esc(cat.nom)}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(f.tab)}</span>`;
 
@@ -1075,12 +1241,11 @@ function afficherFiche(id) {
       <div class="scen">${f.scen.map((s) => `<div class="sc"><div class="where">${esc(s.where)}</div><div class="verdict">${esc(s.verdict)}</div>
       <ul>${s.items.map((t) => `<li>${t}</li>`).join("")}</ul></div>`).join("")}</div></section>` : "";
 
+  $("#ficheHead").dataset.cat = cat.id;
+  $("#ficheTitre").innerHTML = `<div class="eyebrow">${esc(f.type)}</div><h1>${esc(f.title)}</h1><p class="lede">${esc(f.key)}</p>`;
   $("#fiche").innerHTML = `
     <div class="fhead">
-      <div class="ftype${f.fic ? " fic" : ""}">${esc(f.type)}</div>
-      <h1 class="small">${esc(f.title)}</h1>
       <div class="facts">${f.facts.map(([b, s]) => `<div class="fact"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("")}</div>
-      <div class="keyfact">${esc(f.key)}</div>
       ${f.specul ? `<div class="specul"><b>Fiche spéculative.</b> ${esc(f.specul)}</div>` : ""}
     </div>
     ${blocEchelle}${blocAttraction}${blocScenarios}${f.techs ? `<section class="block"><div class="bhead"><span class="bnum">${num()}</span><h4>Technologies associées</h4></div>
@@ -1124,7 +1289,7 @@ function afficherFiche(id) {
   <!-- ===================== 3. COMPARATEUR (contient « À TOI DE CODER ») ===================== -->
   <script>
 /* =====================================================================
-   Hors-Champ — COMPARATEUR DE TROUS NOIRS
+   Hors-Champs — COMPARATEUR DE TROUS NOIRS
    Les données (TROUS_NOIRS) sont dans la partie 1 (DONNÉES).
    ===================================================================== */
 
@@ -1675,11 +1840,9 @@ function construireAccueil() {
   dessinerRegle($("#regle"));
   $("#categories").innerHTML = CATEGORIES.map((k) => `
     <section class="cat-group" aria-label="${esc(k.nom)}">
-      <div class="cat-title"><h3><a class="lien-cat" href="#cat-${k.id}">${esc(k.nom)} →</a></h3><span>${k.items.length} comparaison${k.items.length > 1 ? "s" : ""}</span></div>
-      <div class="cards">${k.items.map(([id]) => {
-        const f = FICHES.find((x) => x.id === id);
-        return `<a class="card${f.fic ? " fic" : ""}" href="#${f.id}"><span class="type">${esc(f.type)}</span><h4>${esc(f.tab)}</h4><p>${esc(f.key)}</p><span class="go">Voir la comparaison →</span></a>`;
-      }).join("")}</div>
+      <div class="cat-title"><div><div class="eyebrow">${k.items.length} comparaison${k.items.length > 1 ? "s" : ""}</div><h2>${esc(k.nom)}</h2></div>
+        <a class="lien-cat" href="#cat-${k.id}">Tout voir →</a></div>
+      <div class="cards">${k.items.map(([id]) => carteFiche(FICHES.find((x) => x.id === id))).join("")}</div>
     </section>`).join("");
   $("#toutesSources").innerHTML = Object.values(S)
     .map((s) => `<li><a href="${s.u}" target="_blank" rel="noopener">${esc(s.t)}</a></li>`).join("");
@@ -1705,11 +1868,13 @@ document.addEventListener("click", (e) => {
 });
 
 function carteFiche(f) {
-  return `<a class="card${f.fic ? " fic" : ""}" href="#${f.id}"><span class="type">${esc(f.type)}</span><h4>${esc(f.tab)}</h4><p>${esc(f.key)}</p><span class="go">Voir la comparaison →</span></a>`;
+  const cat = CATEGORIES.find((k) => k.items.some((it) => it[0] === f.id));
+  return `<a class="card${f.fic ? " fic" : ""}" data-cat="${cat.id}" href="#${f.id}"><span class="visuel" aria-hidden="true"></span><span class="type">${esc(f.type)}</span><h4>${esc(f.tab)}</h4><p>${esc(f.key)}</p><span class="go">Voir la comparaison →</span></a>`;
 }
 function afficherCategorie(k) {
-  document.title = k.nom + " · Hors-Champ";
+  document.title = k.nom + " · Hors-Champs";
   $("#filCat").innerHTML = `<a href="#">Accueil</a><span aria-hidden="true">›</span><span aria-current="page">${esc(k.nom)}</span>`;
+  $("#catHead").dataset.cat = k.id;
   $("#catTitre").textContent = k.nom;
   $("#catDesc").textContent = k.desc;
   $("#catCartes").innerHTML = k.items.map(([id]) => carteFiche(FICHES.find((x) => x.id === id))).join("");
@@ -1724,7 +1889,7 @@ function router() {
     document.querySelectorAll(".vue").forEach((v) => { v.hidden = v.id !== "vue-" + vue; });
     if (vue === "astre") afficherFiche(cle);
     else if (vue === "categorie") afficherCategorie(catVue);
-    else document.title = { accueil: "Hors-Champ", comparateur: "Comparateur · Hors-Champ", methode: "Méthode · Hors-Champ", creer: "Crée ton trou noir · Hors-Champ" }[vue];
+    else document.title = { accueil: "Hors-Champs", comparateur: "Comparateur · Hors-Champs", methode: "Méthode · Hors-Champs", creer: "Crée ton trou noir · Hors-Champs" }[vue];
     if (vue === "comparateur") { mettreAJour(); lancerTests(); }
     if (vue === "accueil") requestAnimationFrame(dessinerHeros);
     if (vue === "creer") requestAnimationFrame(majCreer);
@@ -1735,9 +1900,13 @@ function router() {
     });
     document.querySelectorAll(".menu-link").forEach((a) => a.classList.toggle("on", a.dataset.vue === vue));
     window.scrollTo(0, 0);
+    etatNav();
   };
   if (document.startViewTransition && !mouvementReduit) document.startViewTransition(changer); else changer();
 }
+
+function etatNav() { $(".nav").classList.toggle("solide", scrollY > 24); }
+addEventListener("scroll", etatNav, { passive: true });
 
 construireMenu();
 construireAccueil();
