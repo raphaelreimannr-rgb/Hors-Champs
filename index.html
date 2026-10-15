@@ -633,6 +633,23 @@ main { max-width: var(--page); padding-block: 0 96px; gap: 72px; }
 .ecran-img { margin: 6px 0 0; display: flex; flex-direction: column; gap: 8px; }
 .ecran-img img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; display: block; }
 .ecran-img figcaption { font-size: 12.5px; color: var(--muted); }
+
+/* ---------- Actualités ---------- */
+.actus-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 18px; }
+.actu { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px; border-radius: 10px; background: rgba(16,19,40,.6); min-width: 0; }
+.actu-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.actu-src { font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); font-size: 12px; }
+.actu-lang { border: 1px solid var(--line-2); border-radius: 4px; padding: 0 5px; font-size: 11px; }
+.actu h4 { font-size: 21px; line-height: 1.25; margin: 0; }
+.actu h4 a { color: var(--fg); text-decoration: none; }
+.actu h4 a:hover { color: var(--star); text-decoration: underline; text-underline-offset: 4px; }
+.actu p { margin: 0; font-size: 14.5px; color: #c9cbe0; }
+.actu-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+.actu-tags span, .actu-tags a { font-size: 12px; border-radius: 999px; padding: 2px 9px; border: 1px solid var(--line); color: var(--muted); text-decoration: none; }
+.actu-tags a { border-color: var(--accent); color: var(--accent); }
+.actu-une { padding: clamp(24px, 4vw, 40px); border-left: 3px solid var(--accent); background: linear-gradient(120deg, rgba(240,178,90,.10), rgba(16,19,40,.6) 60%); }
+.actu-une h4 { font-size: clamp(26px, 3.2vw, 38px); }
+.chip.actif { border-color: var(--accent); color: var(--fg); }
   </style>
 </head>
 <body>
@@ -668,6 +685,12 @@ main { max-width: var(--page); padding-block: 0 96px; gap: 72px; }
         <h2>Ce que l'écran montre, ce que la physique impose.</h2></div>
         <p class="lede">Gargantua, la forge de Nidavellir, Tatooine, la tempête de Seul sur Mars… Chaque astre est mis à l'échelle face au Soleil, comparé à de vrais objets, puis placé à la place du Soleil pour voir ce qui arriverait à la Terre.</p>
       </header>
+      <section class="stack bande" aria-labelledby="t-dernieres">
+        <div class="cat-title"><div><div class="eyebrow">Mis à jour chaque soir à 19 h</div><h2 id="t-dernieres">Dernières actualités</h2></div>
+          <a class="lien-cat" href="#actus">Toutes les actus →</a></div>
+        <div class="actus-grille" id="actusAccueil"></div>
+      </section>
+
       <section class="stack bande" aria-labelledby="t-regle">
         <div class="sec-head"><div class="eyebrow">Distances</div><h2 id="t-regle">Du plus proche au plus lointain</h2>
         <p class="lede">Distance depuis la Terre en années-lumière, sur une échelle logarithmique : chaque graduation multiplie la distance par 10. Clique sur un astre.</p></div>
@@ -752,6 +775,23 @@ main { max-width: var(--page); padding-block: 0 96px; gap: 72px; }
         <div class="bhead"><h4 id="t-effets">Effets sur la Terre s'il prenait la place du Soleil</h4></div>
         <ol class="etapes" id="effetsTerre"></ol>
         <p class="note">Calculs : r_s = 2GM/c², g = GM/d², chute libre t = (π/2)·√(d³/2GM), marée Δa = 2GM·L/r³ avec L = 2 m. Les fonctions viennent du comparateur. Trou noir supposé sans rotation (un trou noir qui tourne vite, comme Gargantua, a un horizon jusqu'à deux fois plus petit). Mécanique de Newton hors de l'horizon : ce sont des ordres de grandeur.</p>
+      </section>
+    </div>
+
+    <div class="vue" id="vue-actus" hidden>
+      <header class="hero">
+        <div class="eyebrow">Actualités</div>
+        <h1 class="small">L'espace, ce soir</h1>
+        <p class="lede">Chaque soir à 19 h, le site rassemble automatiquement les dernières annonces des agences spatiales et des grands observatoires. Les liens mènent directement aux communiqués officiels.</p>
+      </header>
+      <p class="note" id="actusEtat"></p>
+      <div class="chips" id="actusFiltres"></div>
+      <div id="actusUne"></div>
+      <div class="actus-grille" id="actusListe"></div>
+      <section class="stack" aria-labelledby="t-actus-src">
+        <div class="bhead"><h4 id="t-actus-src">Sources suivies</h4></div>
+        <ul class="src" id="actusSources" style="font-size:15px"></ul>
+        <p class="note">Sources officielles uniquement : agences spatiales (ESA, NASA) et observatoires (ESO, télescopes Hubble et Webb). La plupart des communiqués sont en anglais. Le tri par thème et les liens vers les fiches sont faits automatiquement par mots-clés : ils peuvent parfois se tromper.</p>
       </section>
     </div>
 
@@ -849,6 +889,7 @@ main { max-width: var(--page); padding-block: 0 96px; gap: 72px; }
         <li><a href="#cat-trous-noirs">Trous noirs</a></li><li><a href="#cat-neutrons">Étoiles à neutrons</a></li>
         <li><a href="#cat-etoiles">Étoiles</a></li><li><a href="#cat-planetes">Système solaire</a></li><li><a href="#cat-hypothetique">Hypothétique</a></li></ul></nav>
       <nav aria-label="Outils"><h6>Outils</h6><ul>
+        <li><a href="#actus">Actualités</a></li>
         <li><a href="#creer">Crée ton trou noir</a></li><li><a href="#quiz">Vrai ou faux au cinéma</a></li><li><a href="#miller">Le temps sur Miller</a></li><li><a href="#comparateur">Comparateur</a></li><li><a href="#methode">Méthode & sources</a></li></ul></nav>
       <div><h6>Le projet</h6><p>Conçu et codé par Raphaël, 2026-2027. Vues d'artiste générées par le site ; données issues des sources citées sur chaque page.</p></div>
     </div>
@@ -2016,6 +2057,73 @@ $("#millerPresets").addEventListener("click", (e) => {
 
   </script>
 
+  <!-- ===================== 3 sexies. ACTUALITÉS ===================== -->
+  <script>
+
+/* =====================================================================
+   ACTUALITÉS — lit actus.json, mis à jour chaque soir par GitHub
+   ===================================================================== */
+const ACTUS_URLS = [
+  "https://raw.githubusercontent.com/raphaelreimannr-rgb/Hors-Champs/main/actus.json",
+  "actus.json"
+];
+const ACTUS_SECOURS = {"genere": "2026-10-15T18:46+02:00", "une": "https://www.esa.int/Science_Exploration/Space_Science/Mars_moon_lander_set_to_launch_on_19_October", "sources": [{"source": "ESO", "nom": "Observatoire européen austral", "url": "https://www.eso.org/public/news/feed/", "ok": true, "articles": 0}, {"source": "ESA", "nom": "Agence spatiale européenne – science", "url": "https://www.esa.int/rssfeed/Our_Activities/Space_Science", "ok": true, "articles": 3}, {"source": "ESA France", "nom": "Agence spatiale européenne – France", "url": "https://www.esa.int/rssfeed/Space_in_Member_States/France", "ok": true, "articles": 2}, {"source": "Webb", "nom": "Télescope spatial James Webb (ESA)", "url": "https://esawebb.org/news/feed/", "ok": true, "articles": 3}, {"source": "Hubble", "nom": "Télescope spatial Hubble (ESA)", "url": "https://esahubble.org/news/feed/", "ok": true, "articles": 1}, {"source": "NASA", "nom": "NASA – communiqués", "url": "https://www.nasa.gov/news-release/feed/", "ok": true, "articles": 3}], "articles": [{"titre": "Rigorous Analysis Confirms NASA's Artemis II Heat Shield Performance", "lien": "https://www.nasa.gov/missions/artemis/artemis-2/rigorous-analysis-confirms-nasas-artemis-ii-heat-shield-performance/", "source": "NASA", "langue": "en", "date": "2026-10-15T16:57+02:00", "resume": "", "themes": ["Missions"], "fiches": [], "priorite": 2}, {"titre": "Chandra Finds Possible Origin of 'Treble Clef' Waves", "lien": "https://www.nasa.gov/image-article/chandra-finds-possible-origin-of-treble-clef-waves/", "source": "NASA", "langue": "en", "date": "2026-10-15T16:19+02:00", "resume": "", "themes": ["Autres"], "fiches": [], "priorite": 2}, {"titre": "APOD: 2026 October 15 – The Milky Way over Manhattan", "lien": "https://science.nasa.gov/image-article/apod-2026-october-15-the-milky-way-over-manhattan/", "source": "NASA", "langue": "en", "date": "2026-10-15T06:05+02:00", "resume": "", "themes": ["Galaxies et cosmos"], "fiches": [], "priorite": 2}, {"titre": "Mars moon lander set to launch on 19 October", "lien": "https://www.esa.int/Science_Exploration/Space_Science/Mars_moon_lander_set_to_launch_on_19_October", "source": "ESA", "langue": "en", "date": "2026-10-13T14:00+02:00", "resume": "", "themes": ["Planètes", "Missions"], "fiches": ["mars"], "priorite": 1}, {"titre": "Le public au rendez-vous pour la seconde édition des journées portes ouvertes de l'ESA", "lien": "https://www.esa.int/Space_in_Member_States/France/Le_public_au_rendez-vous_pour_la_seconde_edition_des_journees_portes_ouvertes_de_l_ESA", "source": "ESA France", "langue": "fr", "date": "2026-10-12T15:50+02:00", "resume": "", "themes": ["Autres"], "fiches": [], "priorite": 2}, {"titre": "Invitation aux médias: Conférence de presse avec l'astronaute de l'ESA Sophie Adenot", "lien": "https://www.esa.int/Newsroom/Press_Releases/Invitation_aux_medias_Conference_de_presse_avec_l_astronaute_de_l_ESA_Sophie_Adenot2", "source": "ESA France", "langue": "fr", "date": "2026-10-12T10:48+02:00", "resume": "", "themes": ["Missions"], "fiches": [], "priorite": 2}, {"titre": "Webb measures distance to farthest fast radio burst, suggesting origin", "lien": "https://esawebb.org/news/weic2621/", "source": "Webb", "langue": "en", "date": "2026-10-08T20:00+02:00", "resume": "", "themes": ["Galaxies et cosmos"], "fiches": [], "priorite": 1}, {"titre": "Solar Orbiter tracks origin of mysterious magnetic switchbacks", "lien": "https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter/Solar_Orbiter_tracks_origin_of_mysterious_magnetic_switchbacks", "source": "ESA", "langue": "en", "date": "2026-10-08T11:00+02:00", "resume": "", "themes": ["Soleil"], "fiches": [], "priorite": 1}, {"titre": "Mars's oddest cloud may be even odder than we thought", "lien": "https://www.esa.int/Science_Exploration/Space_Science/Mars_Express/Mars_s_oddest_cloud_may_be_even_odder_than_we_thought", "source": "ESA", "langue": "en", "date": "2026-10-07T17:00+02:00", "resume": "", "themes": ["Planètes"], "fiches": ["mars"], "priorite": 1}, {"titre": "Webb captures commotion from nebula's stellar jets", "lien": "https://esawebb.org/news/weic2620/", "source": "Webb", "langue": "en", "date": "2026-10-06T15:00+02:00", "resume": "", "themes": ["Étoiles"], "fiches": [], "priorite": 1}, {"titre": "Suspected second-generation planet solves Hubble cold case", "lien": "https://esahubble.org/news/heic2613/", "source": "Hubble", "langue": "en", "date": "2026-10-05T17:00+02:00", "resume": "", "themes": ["Planètes"], "fiches": [], "priorite": 1}, {"titre": "Webb provides crash course on planet-shattering collisions", "lien": "https://esawebb.org/news/weic2618/", "source": "Webb", "langue": "en", "date": "2026-10-01T16:00+02:00", "resume": "", "themes": ["Autres"], "fiches": [], "priorite": 1}]};
+let ACTUS = null, filtreActu = "Tout";
+
+async function chargerDonneesActus() {
+  for (const u of ACTUS_URLS) {
+    try {
+      const r = await fetch(u + (u.startsWith("http") ? "?t=" + Date.now() : ""), { cache: "no-store" });
+      if (!r.ok) continue;
+      const d = await r.json();
+      if (d && Array.isArray(d.articles) && d.articles.length) return d;
+    } catch (e) { /* on essaie la source suivante */ }
+  }
+  return ACTUS_SECOURS;
+}
+function dateActu(iso, long) {
+  const d = new Date(iso);
+  const jours = Math.floor((Date.now() - d) / 86400000);
+  const rel = jours <= 0 ? "aujourd'hui" : jours === 1 ? "hier" : `il y a ${jours} jours`;
+  return long ? d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) + " à " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : rel;
+}
+function carteActu(a, une) {
+  const fiches = (a.fiches || []).map((id) => { const f = FICHES.find((x) => x.id === id); return f ? `<a href="#${id}">Fiche ${esc(f.tab)} →</a>` : ""; }).join("");
+  return `<article class="actu${une ? " actu-une" : ""}">
+    <div class="actu-meta">${une ? `<span class="actu-src">À la une</span>·` : ""}<span class="actu-src">${esc(a.source)}</span><span>${dateActu(a.date)}</span>${a.langue === "en" ? `<span class="actu-lang" title="Article en anglais">EN</span>` : ""}</div>
+    <h4><a href="${a.lien}" target="_blank" rel="noopener">${esc(a.titre)}</a></h4>
+    ${a.resume ? `<p>${esc(a.resume)}</p>` : ""}
+    <div class="actu-tags">${(a.themes || []).map((t) => `<span>${esc(t)}</span>`).join("")}${fiches}</div>
+  </article>`;
+}
+function rendreActus() {
+  const d = ACTUS, arts = d.articles;
+  const une = arts.find((a) => a.lien === d.une) || arts[0];
+  $("#actusEtat").textContent = `Dernière mise à jour : ${dateActu(d.genere, true)} · ${arts.length} articles des 30 derniers jours · prochaine mise à jour ce soir vers 19 h.`;
+  const themes = ["Tout", ...new Set(arts.flatMap((a) => a.themes || []))];
+  $("#actusFiltres").innerHTML = themes.map((t) => `<button type="button" class="chip${t === filtreActu ? " actif" : ""}" data-theme="${esc(t)}">${esc(t)}</button>`).join("");
+  const liste = arts.filter((a) => a !== une && (filtreActu === "Tout" || (a.themes || []).includes(filtreActu)));
+  $("#actusUne").innerHTML = filtreActu === "Tout" ? carteActu(une, true) : "";
+  $("#actusListe").innerHTML = liste.length ? liste.map((a) => carteActu(a)).join("") : `<div class="empty">Aucun article sur ce thème ce mois-ci.</div>`;
+  $("#actusSources").innerHTML = (d.sources || []).map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.nom)}</a> — ${s.ok ? s.articles + " article(s) ce mois-ci" : "indisponible lors de la dernière mise à jour"}</li>`).join("");
+}
+async function afficherActus() {
+  if (!ACTUS) ACTUS = await chargerDonneesActus();
+  rendreActus();
+}
+async function afficherActusAccueil() {
+  if (!ACTUS) ACTUS = await chargerDonneesActus();
+  $("#actusAccueil").innerHTML = ACTUS.articles.slice(0, 3).map((a) => carteActu(a)).join("");
+}
+$("#actusFiltres").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-theme]"); if (!b) return;
+  filtreActu = b.dataset.theme; rendreActus();
+});
+$("#actusAccueil").innerHTML = ACTUS_SECOURS.articles.slice(0, 3).map((a) => carteActu(a)).join("");
+afficherActusAccueil();
+
+  </script>
+
   <!-- ===================== 3 quater. QUIZ ===================== -->
   <script>
 
@@ -2116,7 +2224,7 @@ $("#quizBox").addEventListener("click", (e) => {
    ===================================================================== */
 function construireMenu() {
   const m = $("#menu");
-  m.innerHTML = CATEGORIES.map((k) => `
+  m.innerHTML = `<li><a class="menu-link" href="#actus" data-vue="actus">Actualités</a></li>` + CATEGORIES.map((k) => `
     <li><button class="menu-btn" type="button" aria-expanded="false" aria-controls="drop-${k.id}" data-cat="${k.id}">${esc(k.nom)}<svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="drop" id="drop-${k.id}">
         <a class="drop-head" href="#cat-${k.id}" data-id="cat-${k.id}">${esc(k.nom)} · tout voir →</a>
@@ -2344,12 +2452,13 @@ function router() {
   const cle = cleCourante;
   const estFiche = FICHES.some((f) => f.id === cle);
   const catVue = cle.startsWith("cat-") ? CATEGORIES.find((k) => "cat-" + k.id === cle) : null;
-  const vue = estFiche ? "astre" : catVue ? "categorie" : ["comparateur", "methode", "creer", "quiz", "miller"].includes(cle) ? cle : "accueil";
+  const vue = estFiche ? "astre" : catVue ? "categorie" : ["comparateur", "methode", "creer", "quiz", "miller", "actus"].includes(cle) ? cle : "accueil";
   const changer = () => {
     document.querySelectorAll(".vue").forEach((v) => { v.hidden = v.id !== "vue-" + vue; });
     if (vue === "astre") afficherFiche(cle);
     else if (vue === "categorie") afficherCategorie(catVue);
-    else document.title = { accueil: "Hors-Champs", comparateur: "Comparateur · Hors-Champs", methode: "Méthode · Hors-Champs", creer: "Crée ton trou noir · Hors-Champs", quiz: "Vrai ou faux au cinéma · Hors-Champs", miller: "Le temps sur la planète de Miller · Hors-Champs" }[vue];
+    else document.title = { accueil: "Hors-Champs", comparateur: "Comparateur · Hors-Champs", methode: "Méthode · Hors-Champs", creer: "Crée ton trou noir · Hors-Champs", quiz: "Vrai ou faux au cinéma · Hors-Champs", miller: "Le temps sur la planète de Miller · Hors-Champs", actus: "Actualités · Hors-Champs" }[vue];
+    if (vue === "actus") afficherActus();
     if (vue === "miller") majMiller();
     if (vue === "quiz" && !QUIZ_ETAT.lance) demarrerQuiz();
     if (vue === "comparateur") { mettreAJour(); lancerTests(); }
